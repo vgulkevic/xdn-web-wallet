@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Route} from "react-router-dom";
+import appStyles from "./assets/globalStyles";
+import {MuiThemeProvider} from '@material-ui/core/styles';
+import theme from "./theme";
+import {SnackbarProvider} from "notistack";
+import Notifier from "./components/Notifier/Notifier";
+import {LoginPage} from "./pages/Login/LoginPage";
+import {AuthenticatedRoute} from "./pages/AuthenticatedRoute";
+import {useUser} from "./hooks/useUser";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export const App = () => {
+    const styles = appStyles();
+    const user = useUser();
+
+    return (
+        <MuiThemeProvider theme={theme}>
+            <SnackbarProvider maxSnack={5}
+                              anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+                              classes={{variantSuccess: styles.success, variantError: styles.error}}>
+                <Notifier/>
+
+                <BrowserRouter>
+                    <Route path="/" render={(props) => !user ? <LoginPage {...props} /> : <AuthenticatedRoute {...props} />}/>
+                </BrowserRouter>
+
+            </SnackbarProvider>
+        </MuiThemeProvider>
+    );
 }
-
-export default App;
