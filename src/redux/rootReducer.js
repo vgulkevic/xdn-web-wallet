@@ -1,8 +1,10 @@
 import {combineReducers} from "redux";
-import {notifierReducer} from "../components/Notifier/notifierSlice";
+import {NOTIFIER_STORE_NAME, notifierReducer} from "../components/Notifier/notifierSlice";
+import {NAVIGATION_MENU_STORE_NAME, navigationMenuReducer} from "../components/SidebarMenu/redux/navigationMenuSlice";
 
 const reducerList = {
-    notifications: notifierReducer
+    [NOTIFIER_STORE_NAME]: notifierReducer,
+    [NAVIGATION_MENU_STORE_NAME]: navigationMenuReducer
 }
 
 const rootReducer = combineReducers(reducerList);

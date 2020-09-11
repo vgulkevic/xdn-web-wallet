@@ -1,25 +1,26 @@
 import {createMuiTheme} from "@material-ui/core/styles";
 import responsiveFontSizes from "@material-ui/core/styles/responsiveFontSizes";
-import blue from '@material-ui/core/colors/blue';
-import red from "@material-ui/core/colors/red";
-import {green} from "@material-ui/core/colors";
+import {deepPurple, indigo} from "@material-ui/core/colors";
 
 
 let theme = createMuiTheme({
     palette: {
-        primary: blue,
-        green: green[400],
-        red: red[400],
+        primary: {
+            main: deepPurple[600]
+        },
+        secondary: {
+            main: indigo[600]
+        },
         background: {
             default: "#ECEFF1",
         },
     },
     typography: {
-        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+        fontFamily: 'Arimo, Helvetica, Arial, sans-serif',
         button: {
-            fontFamily: "'Open Sans', 'Roboto', 'Helvetica', 'Arial', sans-serif",
+            fontFamily: "'Arimo', 'Helvetica', 'Arial', sans-serif",
             textTransform: "none",
-            fontWeight: 500
+            fontWeight: 400
         }
     }
 });

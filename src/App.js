@@ -6,7 +6,7 @@ import theme from "./theme";
 import {SnackbarProvider} from "notistack";
 import Notifier from "./components/Notifier/Notifier";
 import {LoginPage} from "./pages/Login/LoginPage";
-import {AuthenticatedRoute} from "./pages/AuthenticatedRoute";
+import {AuthenticatedRoute} from "./pages/Private/AuthenticatedRoute";
 import {useUser} from "./hooks/useUser";
 
 export const App = () => {
@@ -21,6 +21,7 @@ export const App = () => {
                 <Notifier/>
 
                 <BrowserRouter>
+                    {/*css baseline, header, menu and are inside AuthenticatedRoute so depending on the layout requirements of loginPage it might be wise to move auth check inside MainRoute*/}
                     <Route path="/" render={(props) => !user ? <LoginPage {...props} /> : <AuthenticatedRoute {...props} />}/>
                 </BrowserRouter>
 

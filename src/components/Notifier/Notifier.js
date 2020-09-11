@@ -1,13 +1,13 @@
 import {useEffect} from "react";
 import {useSnackbar} from "notistack";
 import {useDispatch, useSelector} from "react-redux";
-import {notifierSlice} from "./notifierSlice";
+import {NOTIFIER_STORE_NAME, notifierSlice} from "./notifierSlice";
 
 let displayed = [];
 
 const Notifier = () => {
     const dispatch = useDispatch();
-    const notifications = useSelector(store => store.notifications.notifications || []);
+    const notifications = useSelector(store => store[NOTIFIER_STORE_NAME].notifications || []);
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
     const storeDisplayed = (id) => {

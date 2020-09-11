@@ -19,6 +19,8 @@ import {createSlice} from "@reduxjs/toolkit";
 //     }
 // ));
 
+const NOTIFIER_STORE_NAME = "NOTIFIER_STORE_NAME";
+
 const notifierSlice = createSlice({
     name: 'notifier',
     initialState: {
@@ -63,4 +65,9 @@ const notifierSlice = createSlice({
 const {enqueueSnackbar} = notifierSlice.actions
 const notifierReducer = notifierSlice.reducer;
 
-export {notifierReducer, notifierSlice, enqueueSnackbar};
+export {
+    NOTIFIER_STORE_NAME,
+    notifierReducer,
+    notifierSlice,
+    enqueueSnackbar
+};
