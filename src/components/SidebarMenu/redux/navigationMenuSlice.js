@@ -3,15 +3,26 @@ import {createSlice} from "@reduxjs/toolkit";
 const NAVIGATION_MENU_STORE_NAME = "NAVIGATION_MENU_STORE_NAME";
 
 const initialState = {
-    currentMenuItem: null
+    currentMenuItem: null,
+    sidebarOpen: false,
+    initialised: false
 };
 
 const navigationMenuSlice = createSlice({
     name: 'navigationMenuSlice',
     initialState: initialState,
     reducers: {
+        initialise: (state, action) => {
+            console.log(`${state.sidebarOpen} setting to ${action.payload}`);
+            state.sidebarOpen = action.payload;
+            state.initialised = true;
+            return state;
+        },
         setCurrentMenuItem: (state, action) => {
             state.currentMenuItem = action.payload;
+        },
+        setSidebarOpen: (state, action) => {
+            state.sidebarOpen = action.payload;
         },
         reset: () => {
             return initialState;
@@ -20,7 +31,9 @@ const navigationMenuSlice = createSlice({
 });
 
 const navigationMenuReducer = navigationMenuSlice.reducer;
+const initialiseSidebar = navigationMenuSlice.actions.initialise;
 const setCurrentMenuItem = navigationMenuSlice.actions.setCurrentMenuItem;
+const setSidebarOpen = navigationMenuSlice.actions.setSidebarOpen;
 const resetCurrentMenuItem = navigationMenuSlice.actions.reset;
 
 export {
@@ -28,6 +41,8 @@ export {
     navigationMenuReducer,
     navigationMenuSlice,
     // actions
+    initialiseSidebar,
     setCurrentMenuItem,
+    setSidebarOpen,
     resetCurrentMenuItem
 }

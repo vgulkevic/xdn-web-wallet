@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -24,8 +24,8 @@ import Logo from "../../assets/img/DigitalNoteLogoText.png"
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {MenuItem} from "./MenuItem";
-import {useSelector} from "react-redux";
-import {NAVIGATION_MENU_STORE_NAME} from "./redux/navigationMenuSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {initialiseSidebar, NAVIGATION_MENU_STORE_NAME, setSidebarOpen} from "./redux/navigationMenuSlice";
 import {DASHBOARD_MENU_ITEM, DASHBOARD_PATH} from "../../pages/Private/Dashboard/Dashboard";
 import {RECEIVE_MENU_ITEM, RECEIVE_PATH} from "../../pages/Private/Receive/Receive";
 import {SEND_MENU_ITEM, SEND_PATH} from "../../pages/Private/Send/Send";
@@ -34,6 +34,7 @@ import {ADDRESSES_MENU_ITEM, ADDRESSES_PATH} from "../../pages/Private/Addresses
 import {MASTERNODES_MENU_ITEM, MASTERNODES_PATH} from "../../pages/Private/Masternodes/Masternodes";
 import {MESSAGES_MENU_ITEM, MESSAGES_PATH} from "../../pages/Private/Messages/Messages";
 import {BLOCK_EXPLORER_MENU_ITEM, BLOCK_EXPLORER_PATH} from "../../pages/Private/BlockExplorer/BlockExplorer";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export const drawerWidth = 240;
 
@@ -65,25 +66,9 @@ const useStyles = makeStyles((theme) => ({
     drawer: {
         width: drawerWidth,
         flexShrink: 0,
-        whiteSpace: 'nowrap',
     },
-    drawerOpen: {
+    drawerPaper: {
         width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    drawerClose: {
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        overflowX: 'hidden',
-        width: theme.spacing(7) + 1,
-        [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9) + 1,
-        },
     },
     toolbar: {
         display: 'flex',
@@ -101,12 +86,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const SidebarMenu = () => {
+    const dispatch = useDispatch();
     const classes = useStyles();
     const theme = useTheme();
-    const [open, setOpen] = React.useState(true);
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'));
+    const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
+
     const iconColor = "secondary";
 
-    const {currentMenuItem} = useSelector(state => state[NAVIGATION_MENU_STORE_NAME]);
+    const {sidebarOpen, currentMenuItem, initialised} = useSelector(state => state[NAVIGATION_MENU_STORE_NAME]);
+
+    useEffect(() => {
+        console.log(`init with ${lgUp}`);
+
+        if (!initialised && (mdDown || lgUp)) {
+            dispatch(initialiseSidebar(lgUp))
+        }
+
+    }, [dispatch, initialised, mdDown, lgUp]);
+
+    useEffect(() => {
+        dispatch(setSidebarOpen(true));
+    }, [dispatch]);
+
+    const handleDrawerOnClose = () => {
+        dispatch(setSidebarOpen(false));
+    }
+
+    const handleDrawerOnOpen = () => {
+        dispatch(setSidebarOpen(true));
+    }
 
     const isSelected = (menuItemId) => {
         return menuItemId === currentMenuItem;
@@ -114,55 +123,57 @@ export const SidebarMenu = () => {
 
     return (
         <>
-            <Header isDrawerOpen={open} handleDrawerOpen={setOpen}/>
-            <Drawer
-                variant="permanent"
-                className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
-                })}
-                classes={{
-                    paper: clsx({
-                        [classes.drawerOpen]: open,
-                        [classes.drawerClose]: !open,
-                    }),
-                }}
-            >
-                <div className={classes.toolbar}>
-                    <div style={{width: '100%'}}>
-                        <CardMedia className={classes.media} component="img" src={Logo}/>
-                    </div>
-                    <IconButton onClick={()=>setOpen(false)}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
-                </div>
+            {initialised ?
+                <>
+                    <Header isDrawerOpen={sidebarOpen} handleDrawerOpen={handleDrawerOnOpen}/>
+
+                    <Drawer
+                        className={classes.drawer}
+                        variant="persistent"
+                        anchor="left"
+                        open={sidebarOpen}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                    >
+                        <div className={classes.toolbar}>
+                            <div style={{width: '100%'}}>
+                                <CardMedia className={classes.media} component="img" src={Logo}/>
+                            </div>
+                            <IconButton onClick={handleDrawerOnClose}>
+                                {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
+                            </IconButton>
+                        </div>
 
 
-                <Divider/>
-                <List>
-                    <MenuItem text={'Dashboard'} icon={<HomeIcon color={iconColor}/>} selected={isSelected(DASHBOARD_MENU_ITEM)} path={DASHBOARD_PATH}/>
-                    <MenuItem text={'Receive'} icon={<CallReceivedIcon color={iconColor}/>} selected={isSelected(RECEIVE_MENU_ITEM)} path={RECEIVE_PATH}/>
-                    <MenuItem text={'Send'} icon={<CallMissedOutgoingIcon color={iconColor}/>} selected={isSelected(SEND_MENU_ITEM)} path={SEND_PATH}/>
-                    <MenuItem text={'Transactions'} icon={<AccountBalanceWalletIcon color={iconColor}/>} selected={isSelected(TRANSACTIONS_MENU_ITEM)} path={TRANSACTIONS_PATH}/>
-                    <MenuItem text={'Addresses'} icon={<ContactsIcon color={iconColor}/>} selected={isSelected(ADDRESSES_MENU_ITEM)} path={ADDRESSES_PATH}/>
-                    <MenuItem text={'Masternodes'} icon={<SettingsInputAntennaIcon color={iconColor}/>} selected={isSelected(MASTERNODES_MENU_ITEM)} path={MASTERNODES_PATH}/>
-                    <MenuItem text={'Messages'} icon={<MessageIcon color={iconColor}/>} selected={isSelected(MESSAGES_MENU_ITEM)} path={MESSAGES_PATH}/>
-                    <MenuItem text={'Block Explorer'} icon={<ExploreIcon color={iconColor}/>} selected={isSelected(BLOCK_EXPLORER_MENU_ITEM)} path={BLOCK_EXPLORER_PATH}/>
-                </List>
-                <Divider/>
+                        <Divider/>
+                        <List>
+                            <MenuItem text={'Dashboard'} icon={<HomeIcon color={iconColor}/>} selected={isSelected(DASHBOARD_MENU_ITEM)} path={DASHBOARD_PATH}/>
+                            <MenuItem text={'Receive'} icon={<CallReceivedIcon color={iconColor}/>} selected={isSelected(RECEIVE_MENU_ITEM)} path={RECEIVE_PATH}/>
+                            <MenuItem text={'Send'} icon={<CallMissedOutgoingIcon color={iconColor}/>} selected={isSelected(SEND_MENU_ITEM)} path={SEND_PATH}/>
+                            <MenuItem text={'Transactions'} icon={<AccountBalanceWalletIcon color={iconColor}/>} selected={isSelected(TRANSACTIONS_MENU_ITEM)} path={TRANSACTIONS_PATH}/>
+                            <MenuItem text={'Addresses'} icon={<ContactsIcon color={iconColor}/>} selected={isSelected(ADDRESSES_MENU_ITEM)} path={ADDRESSES_PATH}/>
+                            <MenuItem text={'Masternodes'} icon={<SettingsInputAntennaIcon color={iconColor}/>} selected={isSelected(MASTERNODES_MENU_ITEM)} path={MASTERNODES_PATH}/>
+                            <MenuItem text={'Messages'} icon={<MessageIcon color={iconColor}/>} selected={isSelected(MESSAGES_MENU_ITEM)} path={MESSAGES_PATH}/>
+                            <MenuItem text={'Block Explorer'} icon={<ExploreIcon color={iconColor}/>} selected={isSelected(BLOCK_EXPLORER_MENU_ITEM)} path={BLOCK_EXPLORER_PATH}/>
+                        </List>
+                        <Divider/>
 
-                <List style={{paddingTop: '50px'}}>
-                    <ListItem button>
-                        <ListItemIcon><SettingsIcon color={iconColor}/></ListItemIcon>
-                        <ListItemText primary={'Settings'}/>
-                    </ListItem>
+                        <List style={{paddingTop: '50px'}}>
+                            <ListItem button>
+                                <ListItemIcon><SettingsIcon color={iconColor}/></ListItemIcon>
+                                <ListItemText primary={'Settings'}/>
+                            </ListItem>
 
-                    <ListItem button>
-                        <ListItemIcon><ExitToAppIcon color={iconColor}/></ListItemIcon>
-                        <ListItemText primary={'Logout'}/>
-                    </ListItem>
-                </List>
-            </Drawer>
+                            <ListItem button>
+                                <ListItemIcon><ExitToAppIcon color={iconColor}/></ListItemIcon>
+                                <ListItemText primary={'Logout'}/>
+                            </ListItem>
+                        </List>
+                    </Drawer>
+                </>
+                : null
+            }
         </>
     );
 }

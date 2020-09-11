@@ -7,25 +7,21 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import {drawerWidth} from "./SidebarMenu";
-import {useSelector} from "react-redux";
-import {NAVIGATION_MENU_STORE_NAME} from "./redux/navigationMenuSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {NAVIGATION_MENU_STORE_NAME, setSidebarOpen} from "./redux/navigationMenuSlice";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-    },
     appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
+        transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
     },
     appBarShift: {
-        marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
+        marginLeft: drawerWidth,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
     },
@@ -37,25 +33,28 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const Header = ({handleDrawerOpen, isDrawerOpen}) => {
+export const Header = () => {
+    const dispatch = useDispatch();
     const classes = useStyles();
-    const {currentMenuItem} = useSelector(state => state[NAVIGATION_MENU_STORE_NAME]);
+    const {sidebarOpen, currentMenuItem} = useSelector(state => state[NAVIGATION_MENU_STORE_NAME]);
 
     return (
         <AppBar
             position="fixed"
             className={clsx(classes.appBar, {
-                [classes.appBarShift]: isDrawerOpen,
+                [classes.appBarShift]: sidebarOpen,
             })}
         >
             <Toolbar>
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"
-                    onClick={() => handleDrawerOpen(true)}
+                    onClick={() => {
+                        dispatch(setSidebarOpen(true));
+                    }}
                     edge="start"
                     className={clsx(classes.menuButton, {
-                        [classes.hide]: isDrawerOpen,
+                        [classes.hide]: sidebarOpen,
                     })}
                 >
                     <MenuIcon />
