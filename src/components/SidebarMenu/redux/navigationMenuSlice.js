@@ -13,7 +13,6 @@ const navigationMenuSlice = createSlice({
     initialState: initialState,
     reducers: {
         initialise: (state, action) => {
-            console.log(`${state.sidebarOpen} setting to ${action.payload}`);
             state.sidebarOpen = action.payload;
             state.initialised = true;
             return state;

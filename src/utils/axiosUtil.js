@@ -1,7 +1,8 @@
 import axios from "axios";
+import {authenticateUserStateNames, USER_SESSION_STORE_NAME} from "../redux/userSessionSlice";
 
 const client = axios.create({
-    baseURL: '',
+    baseURL: 'http://localhost:3050',
     headers: {}
 });
 
@@ -24,7 +25,16 @@ export function getHttpClient() {
 
 export function geHttpClientWithApiKey({getState}) {
     const c = getHttpClient();
-    // if(apiKey)
-    //     c.defaults.headers['x-api-key'] = apiKey;
+
+    let token;
+    if (getState()[USER_SESSION_STORE_NAME] && getState()[USER_SESSION_STORE_NAME][authenticateUserStateNames.entity]) {
+        token = getState()[USER_SESSION_STORE_NAME][authenticateUserStateNames.entity].token;
+    }
+
+    if (!token) {
+        throw new Error('No user token');
+    }
+
+    c.defaults.headers['x-token'] = token;
     return c;
 }

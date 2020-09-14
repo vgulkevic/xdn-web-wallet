@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import clsx from 'clsx';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -35,6 +34,8 @@ import {MASTERNODES_MENU_ITEM, MASTERNODES_PATH} from "../../pages/Private/Maste
 import {MESSAGES_MENU_ITEM, MESSAGES_PATH} from "../../pages/Private/Messages/Messages";
 import {BLOCK_EXPLORER_MENU_ITEM, BLOCK_EXPLORER_PATH} from "../../pages/Private/BlockExplorer/BlockExplorer";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {resetState} from "../../redux/userSessionSlice";
+import {useHistory} from "react-router-dom";
 
 export const drawerWidth = 240;
 
@@ -87,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const SidebarMenu = () => {
     const dispatch = useDispatch();
+    const history = useHistory();
     const classes = useStyles();
     const theme = useTheme();
     const mdDown = useMediaQuery(theme.breakpoints.down('md'));
@@ -97,8 +99,6 @@ export const SidebarMenu = () => {
     const {sidebarOpen, currentMenuItem, initialised} = useSelector(state => state[NAVIGATION_MENU_STORE_NAME]);
 
     useEffect(() => {
-        console.log(`init with ${lgUp}`);
-
         if (!initialised && (mdDown || lgUp)) {
             dispatch(initialiseSidebar(lgUp))
         }
@@ -167,7 +167,11 @@ export const SidebarMenu = () => {
 
                             <ListItem button>
                                 <ListItemIcon><ExitToAppIcon color={iconColor}/></ListItemIcon>
-                                <ListItemText primary={'Logout'}/>
+                                <ListItemText primary={'Logout'} onClick={() => {
+                                    window.localStorage.removeItem('user');
+                                    dispatch(resetState());
+                                    history.push('/set-up');
+                                }}/>
                             </ListItem>
                         </List>
                     </Drawer>

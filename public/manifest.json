@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "DigitalNote Web Wallet",
+  "name": "Crypto web wallet, messenger",
   "icons": [
     {
       "src": "favicon.ico",

@@ -43,6 +43,14 @@ const appStyles = makeStyles(theme => ({
         paddingTop: '80px'
     },
 
+    paperSecondary: {
+        margin: theme.spacing(2, 0),
+        padding: theme.spacing(3, 5),
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(2),
+        }
+    },
+
     //notifications
     success: {
         borderRadius: 0,
