@@ -151,19 +151,19 @@ export const SidebarMenu = () => {
                             <MenuItem text={'Dashboard'} icon={<HomeIcon color={iconColor}/>} selected={isSelected(DASHBOARD_MENU_ITEM)} path={DASHBOARD_PATH}/>
                             <MenuItem text={'Receive'} icon={<CallReceivedIcon color={iconColor}/>} selected={isSelected(RECEIVE_MENU_ITEM)} path={RECEIVE_PATH}/>
                             <MenuItem text={'Send'} icon={<CallMissedOutgoingIcon color={iconColor}/>} selected={isSelected(SEND_MENU_ITEM)} path={SEND_PATH}/>
-                            <MenuItem text={'Transactions'} icon={<AccountBalanceWalletIcon color={iconColor}/>} selected={isSelected(TRANSACTIONS_MENU_ITEM)} path={TRANSACTIONS_PATH}/>
-                            <MenuItem text={'Addresses'} icon={<ContactsIcon color={iconColor}/>} selected={isSelected(ADDRESSES_MENU_ITEM)} path={ADDRESSES_PATH}/>
+                            {/*<MenuItem text={'Transactions'} icon={<AccountBalanceWalletIcon color={iconColor}/>} selected={isSelected(TRANSACTIONS_MENU_ITEM)} path={TRANSACTIONS_PATH}/>*/}
+                            {/*<MenuItem text={'Addresses'} icon={<ContactsIcon color={iconColor}/>} selected={isSelected(ADDRESSES_MENU_ITEM)} path={ADDRESSES_PATH}/>*/}
                             <MenuItem text={'Masternodes'} icon={<SettingsInputAntennaIcon color={iconColor}/>} selected={isSelected(MASTERNODES_MENU_ITEM)} path={MASTERNODES_PATH}/>
-                            <MenuItem text={'Messages'} icon={<MessageIcon color={iconColor}/>} selected={isSelected(MESSAGES_MENU_ITEM)} path={MESSAGES_PATH}/>
-                            <MenuItem text={'Block Explorer'} icon={<ExploreIcon color={iconColor}/>} selected={isSelected(BLOCK_EXPLORER_MENU_ITEM)} path={BLOCK_EXPLORER_PATH}/>
+                            {/*<MenuItem text={'Messages'} icon={<MessageIcon color={iconColor}/>} selected={isSelected(MESSAGES_MENU_ITEM)} path={MESSAGES_PATH}/>*/}
+                            {/*<MenuItem text={'Block Explorer'} icon={<ExploreIcon color={iconColor}/>} selected={isSelected(BLOCK_EXPLORER_MENU_ITEM)} path={BLOCK_EXPLORER_PATH}/>*/}
                         </List>
                         <Divider/>
 
                         <List style={{paddingTop: '50px'}}>
-                            <ListItem button>
-                                <ListItemIcon><SettingsIcon color={iconColor}/></ListItemIcon>
-                                <ListItemText primary={'Settings'}/>
-                            </ListItem>
+                            {/*<ListItem button>*/}
+                            {/*    <ListItemIcon><SettingsIcon color={iconColor}/></ListItemIcon>*/}
+                            {/*    <ListItemText primary={'Settings'}/>*/}
+                            {/*</ListItem>*/}
 
                             <ListItem button>
                                 <ListItemIcon><ExitToAppIcon color={iconColor}/></ListItemIcon>

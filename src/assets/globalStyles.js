@@ -50,6 +50,16 @@ const appStyles = makeStyles(theme => ({
             padding: theme.spacing(2),
         }
     },
+    tableToolbar: {
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        borderBottom: "2px solid #c4c4c4",
+        backgroundColor: theme.palette.common.white,
+        [theme.breakpoints.down('sm')]: {
+            paddingLeft: theme.spacing(1),
+            paddingRight: theme.spacing(1),
+        },
+    },
 
     //notifications
     success: {

@@ -8,6 +8,7 @@ import {CREATE_NEW_WALLET_STORE_NAME, createNewWalletReducer} from "../pages/Log
 import {IMPORT_NEW_ADDRESS_STORE_NAME, importAddressReducer} from "../pages/Login/redux/importAddressSlice";
 import {ACCOUNT_BALANCE_STORE_NAME, accountBalanceReducer} from "../pages/Private/Dashboard/redux/accountBalanceSlice";
 import {LATEST_TRANSACTIONS_STORE_NAME, latestTransactionsReducer} from "../pages/Private/Dashboard/redux/latestTransactionsSlice";
+import {ACCOUNT_ADDRESSES_STORE_NAME, accountAddressesReducer} from "../pages/Private/Receive/redux/accountAddressesSlice";
 
 const reducerList = {
     [NOTIFIER_STORE_NAME]: notifierReducer,
@@ -18,7 +19,8 @@ const reducerList = {
     [USER_SESSION_STORE_NAME]: userSessionReducer,
     [CREATE_NEW_WALLET_STORE_NAME]: createNewWalletReducer,
     [IMPORT_NEW_ADDRESS_STORE_NAME]: importAddressReducer,
-    [LATEST_TRANSACTIONS_STORE_NAME]: latestTransactionsReducer
+    [LATEST_TRANSACTIONS_STORE_NAME]: latestTransactionsReducer,
+    [ACCOUNT_ADDRESSES_STORE_NAME]: accountAddressesReducer
 }
 
 const rootReducer = combineReducers(reducerList);

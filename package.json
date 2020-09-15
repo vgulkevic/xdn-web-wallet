@@ -20,7 +20,6 @@
     "react-scripts": "3.4.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "sha.js": "^2.4.11",
     "uuid": "^8.3.0"
   },
   "devDependencies": {

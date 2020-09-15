@@ -18,7 +18,7 @@ export const TransactionList = () => {
                     <>
                         <Grid container style={{overflow: "hidden"}}>
                             {
-                                latestTransactions
+                                latestTransactions.slice()
                                     .sort(function (a, b) {
                                         return b.time - a.time;
                                     })
