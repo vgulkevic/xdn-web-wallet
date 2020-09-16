@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {BrowserRouter, Route} from "react-router-dom";
+import {BrowserRouter, Switch, Route} from "react-router-dom";
 import appStyles from "./assets/globalStyles";
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import theme from "./theme";
@@ -12,6 +12,7 @@ import {authenticateUser, authenticateUserStateNames, USER_SESSION_STORE_NAME} f
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {AppLoadError} from "./components/AppLoadError";
 import {PageLoader} from "./components/PageLoader";
+import {MasternodeCalculator} from "./pages/Public/MasternodeCalculator";
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -54,7 +55,10 @@ export const App = () => {
 
                 <CssBaseline/>
                 <BrowserRouter>
-                    <Route path="/" render={(props) => getView(props)}/>
+                    <Switch>
+                        <Route path="/masternode-calculator" render={(props) => <MasternodeCalculator {...props}/>}/>
+                        <Route path="/" render={(props) => getView(props)}/>
+                    </Switch>
                 </BrowserRouter>
 
             </SnackbarProvider>

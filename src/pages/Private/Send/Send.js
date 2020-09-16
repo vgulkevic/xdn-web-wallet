@@ -34,7 +34,6 @@ export const Send = () => {
     } = useSelector(state => state[ACCOUNT_BALANCE_STORE_NAME]);
 
     const {
-        [sendTransactionStateNames.entity]: sentTransaction,
         [sendTransactionStateNames.loading]: sendingTransaction,
         [sendTransactionStateNames.actionCompleted]: transactionHasBeenSent
     } = useSelector(state => state[SEND_TRANSACTION_STORE_NAME]);

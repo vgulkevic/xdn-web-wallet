@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {geHttpClientWithApiKey, getEventHttpClient} from "../../utils/axiosUtil";
+import {geHttpClientWithApiKey} from "../../utils/axiosUtil";
 import {notifierSlice} from "../../components/Notifier/notifierSlice";
 
 export function createCreateItemFromListSliceActionFactory(params) {
