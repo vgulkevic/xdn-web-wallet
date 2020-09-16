@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import {makeStyles} from "@material-ui/core/styles";
 import clsx from "clsx";
 import {useAsync} from "../../hooks/useAsync";
-import {Redirect, Route} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import {LoginSetup} from "./LoginSetup";
 import {NewAddress} from "./NewAddress";
 import {ImportAddress} from "./ImportAddress";
@@ -82,11 +82,13 @@ export const LoginPage = ({...props}) => {
                             <Grid container>
                                 <LogoComponent/>
 
-                                <Route path="/set-up" render={() => <LoginSetup/>}/>
-                                <Route exact path="/new-address" render={() => <NewAddress/>}/>
-                                <Route exact path="/import-address" render={() => <ImportAddress/>}/>
+                                <Switch>
+                                    <Route path="/set-up" render={() => <LoginSetup/>}/>
+                                    <Route exact path="/new-address" render={() => <NewAddress/>}/>
+                                    <Route exact path="/import-address" render={() => <ImportAddress/>}/>
 
-                                <Redirect to='/set-up'/>
+                                    <Redirect to='/set-up'/>
+                                </Switch>
                             </Grid>
                         </Grid>
                     </Paper>

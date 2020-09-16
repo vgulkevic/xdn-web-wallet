@@ -1,7 +1,7 @@
 import React from "react";
 import appStyles from "../../assets/globalStyles";
 import Container from "@material-ui/core/Container";
-import {Redirect, Route} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import {Dashboard, DASHBOARD_PATH} from "./Dashboard/Dashboard";
 import {drawerWidth, SidebarMenu} from "../../components/SidebarMenu/SidebarMenu";
 import {Receive, RECEIVE_PATH} from "./Receive/Receive";
@@ -16,6 +16,7 @@ import {NAVIGATION_MENU_STORE_NAME} from "../../components/SidebarMenu/redux/nav
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import {Settings, SETTINGS_PATH} from "./Settings/Settings";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -44,7 +45,6 @@ export const AuthenticatedRoute = () => {
 
     return (
         <>
-
             <div className={styles.rootDiv}>
                 <SidebarMenu/>
 
@@ -60,19 +60,22 @@ export const AuthenticatedRoute = () => {
 
                             <Container maxWidth="xl" className={styles.container}>
                                 <div style={{width: '100%'}}>
-                                    <Route exact path="/" render={() => <Redirect to={DASHBOARD_PATH}/>}/>
+                                    <Switch>
 
-                                    <Route exact path={DASHBOARD_PATH} render={(props) => <Dashboard {...props} />}/>
-                                    <Route exact path={RECEIVE_PATH} render={(props) => <Receive {...props} />}/>
-                                    <Route exact path={SEND_PATH} render={(props) => <Send {...props} />}/>
-                                    <Route exact path={TRANSACTIONS_PATH} render={(props) => <Transactions {...props} />}/>
-                                    {/*<Route exact path={ADDRESSES_PATH} render={(props) => <Addresses {...props} />}/>*/}
-                                    <Route exact path={MASTERNODES_PATH} render={(props) => <Masternodes {...props} />}/>
-                                    {/*<Route exact path={MESSAGES_PATH} render={(props) => <Messages {...props} />}/>*/}
-                                    {/*<Route exact path={BLOCK_EXPLORER_PATH} render={(props) => <BlockExplorer {...props} />}/>*/}
-                                    <Route exact path={SETTINGS_PATH} render={(props) => <Settings {...props} />}/>
+                                        <Route exact path="/" render={() => <Redirect to={DASHBOARD_PATH}/>}/>
 
-                                    <Redirect to={DASHBOARD_PATH} />
+                                        <Route exact path={DASHBOARD_PATH} render={(props) => <Dashboard {...props} />}/>
+                                        <Route exact path={RECEIVE_PATH} render={(props) => <Receive {...props} />}/>
+                                        <Route exact path={SEND_PATH} render={(props) => <Send {...props} />}/>
+                                        <Route exact path={TRANSACTIONS_PATH} render={(props) => <Transactions {...props} />}/>
+                                        {/*<Route exact path={ADDRESSES_PATH} render={(props) => <Addresses {...props} />}/>*/}
+                                        <Route exact path={MASTERNODES_PATH} render={(props) => <Masternodes {...props} />}/>
+                                        {/*<Route exact path={MESSAGES_PATH} render={(props) => <Messages {...props} />}/>*/}
+                                        {/*<Route exact path={BLOCK_EXPLORER_PATH} render={(props) => <BlockExplorer {...props} />}/>*/}
+                                        <Route exact path={SETTINGS_PATH} render={(props) => <Settings {...props} />}/>
+
+                                        <Redirect to={DASHBOARD_PATH}/>
+                                    </Switch>
                                 </div>
                             </Container>
                         </main>
