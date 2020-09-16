@@ -12,8 +12,9 @@ const {
     stateNames: createNewWalletStateNames
 } = makeAsyncSliceActions({
     actionName: 'createNewWallet',
-    thunkName: 'wallet/new',
     storeName: CREATE_NEW_WALLET_STORE_NAME,
+    entityNameInStore: "createNewWallet",
+    thunkName: 'wallet/new',
     thunkAction: async (arg, thunkPI) => {
         let res = await getHttpClient().post('/new-address', {});
         return res.data;

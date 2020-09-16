@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {createResetState} from "../../../../redux/utils/reducerFunctionsFactory";
-import {createGetSliceActionFactory} from "../../../../redux/utils/getSliceActionFactory";
-import {debugMasternodes} from "./debugMasternodes";
+import {makeAsyncSliceActions} from "../../../../redux/utils/asyncSliceActionFactory";
+import {getHttpClient} from "../../../../utils/axiosUtil";
 
 const MASTERNODES_STORE_NAME = 'MASTERNODES_STORE_NAME';
 
@@ -10,23 +10,16 @@ const {
     thunk: getMasternodes,
     reducers: getMasternodesExtraReducers,
     stateNames: getMasternodesStateNames
-} = createGetSliceActionFactory(
-    {
+} = makeAsyncSliceActions({
         actionName: "getMasternodes",
         storeName: MASTERNODES_STORE_NAME,
         entityNameInStore: "masternodes",
         thunkName: "/masternodes/get",
-        thunkUrl: (arg) => {
-            return `/${arg}/masternodes`
+        thunkAction: async (arg, thunkPI) => {
+            let res = await getHttpClient().get('/masternodes');
+            return res.data.data;
         },
         showToastOnFail: true,
-
-        // for local development
-        debugPromise: () => new Promise((resolve, reject) => {
-            window.setTimeout(function () {
-                resolve(debugMasternodes);
-            }, 300);
-        })
     }
 );
 

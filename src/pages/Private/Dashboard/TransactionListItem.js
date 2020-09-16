@@ -14,27 +14,8 @@ import LoopIcon from '@material-ui/icons/Loop';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import BlockIcon from '@material-ui/icons/Block';
 
-export const TransactionListItem = ({transaction}) => {
+export const TransactionListItem = ({transaction, onClick}) => {
     const ticker = useTicker();
-
-    const getIcon = (transaction) => {
-        switch (transaction.category) {
-            case "receive":
-                return <CallReceivedIcon/>
-            case "send":
-                return <CallMissedOutgoingIcon/>;
-            case "move":
-                return <ImportExportIcon/>;
-            case "generate":
-                return <LoopIcon/>
-            case "orphan":
-                return <BlockIcon/>
-            case "immature":
-                return <AccessTimeIcon/>
-            default:
-                return null;
-        }
-    }
 
     const getAmount = (transaction) => {
         if (transaction.category === "send") {
@@ -44,28 +25,9 @@ export const TransactionListItem = ({transaction}) => {
         return transaction.amount
     }
 
-    const getAmountColor = (transaction) => {
-        const color = {}
-
-        switch (transaction.category) {
-            case "receive":
-            case "generate":
-                // color.color = "#29a24a";
-                return color;
-            case "send":
-                color.color = "#dc645b";
-                return color;
-            case "move":
-            case "orphan":
-            case "immature":
-            default:
-                return null;
-        }
-    }
-
     return (
         <>
-            <ListItem>
+            <ListItem onClick={() => onClick(transaction)} button>
                 <ListItemAvatar>
                     <Avatar>
                         {getIcon(transaction)}
@@ -90,4 +52,42 @@ export const TransactionListItem = ({transaction}) => {
     );
 }
 
+
+export const getIcon = (transaction) => {
+    switch (transaction.category) {
+        case "receive":
+            return <CallReceivedIcon/>
+        case "send":
+            return <CallMissedOutgoingIcon/>;
+        case "move":
+            return <ImportExportIcon/>;
+        case "generate":
+            return <LoopIcon/>
+        case "orphan":
+            return <BlockIcon/>
+        case "immature":
+            return <AccessTimeIcon/>
+        default:
+            return null;
+    }
+}
+
+export const getAmountColor = (transaction) => {
+    const color = {}
+
+    switch (transaction.category) {
+        case "receive":
+        case "generate":
+            // color.color = "#29a24a";
+            return color;
+        case "send":
+            color.color = "#dc645b";
+            return color;
+        case "move":
+        case "orphan":
+        case "immature":
+        default:
+            return null;
+    }
+}
 

@@ -15,6 +15,7 @@ import {useSelector} from "react-redux";
 import {NAVIGATION_MENU_STORE_NAME} from "../../components/SidebarMenu/redux/navigationMenuSlice";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
+import {Settings, SETTINGS_PATH} from "./Settings/Settings";
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -65,10 +66,12 @@ export const AuthenticatedRoute = () => {
                                     <Route exact path={RECEIVE_PATH} render={(props) => <Receive {...props} />}/>
                                     <Route exact path={SEND_PATH} render={(props) => <Send {...props} />}/>
                                     <Route exact path={TRANSACTIONS_PATH} render={(props) => <Transactions {...props} />}/>
-                                    <Route exact path={ADDRESSES_PATH} render={(props) => <Addresses {...props} />}/>
+                                    {/*<Route exact path={ADDRESSES_PATH} render={(props) => <Addresses {...props} />}/>*/}
                                     <Route exact path={MASTERNODES_PATH} render={(props) => <Masternodes {...props} />}/>
-                                    <Route exact path={MESSAGES_PATH} render={(props) => <Messages {...props} />}/>
-                                    <Route exact path={BLOCK_EXPLORER_PATH} render={(props) => <BlockExplorer {...props} />}/>
+                                    {/*<Route exact path={MESSAGES_PATH} render={(props) => <Messages {...props} />}/>*/}
+                                    {/*<Route exact path={BLOCK_EXPLORER_PATH} render={(props) => <BlockExplorer {...props} />}/>*/}
+                                    <Route exact path={SETTINGS_PATH} render={(props) => <Settings {...props} />}/>
+
                                     <Redirect to={DASHBOARD_PATH} />
                                 </div>
                             </Container>

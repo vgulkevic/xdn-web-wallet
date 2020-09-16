@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {createResetState} from "../../../../redux/utils/reducerFunctionsFactory";
 import {createGetSliceActionFactory} from "../../../../redux/utils/getSliceActionFactory";
+import {createFetchSliceActionFactory} from "../../../../redux/utils/fetchSliceActionFactory";
 
 
 const ACCOUNT_BALANCE_STORE_NAME = 'ACCOUNT_BALANCE_STORE_NAME';
@@ -30,8 +31,26 @@ const {
     }
 );
 
+const {
+    initialState: fetchAccountBalanceInitialState,
+    thunk: fetchAccountBalance,
+    reducers: fetchAccountBalanceExtraReducers,
+    stateNames: fetchAccountBalanceStateNames
+} = createFetchSliceActionFactory(
+    {
+        actionName: "fetchAccountBalance",
+        storeName: ACCOUNT_BALANCE_STORE_NAME,
+        entityNameInStore: "accountBalance",
+        thunkName: "/accountBalance/fetch",
+        thunkUrl: (arg) => {
+            return `/balance`
+        },
+    }
+);
+
 const initialState = {
-    ...getAccountBalanceInitialState
+    ...getAccountBalanceInitialState,
+    ...fetchAccountBalanceInitialState
 }
 
 const accountBalanceSlice = createSlice({
@@ -41,7 +60,8 @@ const accountBalanceSlice = createSlice({
         resetState: (state, action) => createResetState(state, action, initialState)
     },
     extraReducers: {
-        ...getAccountBalanceExtraReducers
+        ...getAccountBalanceExtraReducers,
+        ...fetchAccountBalanceExtraReducers
     }
 });
 
@@ -54,9 +74,11 @@ export {
 
     // actions
     getAccountBalance,
+    fetchAccountBalance,
 
     //state names
     getAccountBalanceStateNames,
+    fetchAccountBalanceStateNames,
 
     // reducer actions
     resetState,

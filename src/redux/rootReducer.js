@@ -9,6 +9,9 @@ import {IMPORT_NEW_ADDRESS_STORE_NAME, importAddressReducer} from "../pages/Logi
 import {ACCOUNT_BALANCE_STORE_NAME, accountBalanceReducer} from "../pages/Private/Dashboard/redux/accountBalanceSlice";
 import {LATEST_TRANSACTIONS_STORE_NAME, latestTransactionsReducer} from "../pages/Private/Dashboard/redux/latestTransactionsSlice";
 import {ACCOUNT_ADDRESSES_STORE_NAME, accountAddressesReducer} from "../pages/Private/Receive/redux/accountAddressesSlice";
+import {WALLET_INFO_STORE_NAME, walletInfoReducer} from "../pages/Private/Settings/redux/walletInfoSlice";
+import {SEND_TRANSACTION_STORE_NAME, sendTransactionReducer} from "../pages/Private/Send/redux/sendTransactionSlice";
+import {ACCOUNT_TRANSACTIONS_STORE_NAME, accountTransactionsReducer} from "../pages/Private/Transactions/redux/getTransactionsSlice";
 
 const reducerList = {
     [NOTIFIER_STORE_NAME]: notifierReducer,
@@ -20,7 +23,10 @@ const reducerList = {
     [CREATE_NEW_WALLET_STORE_NAME]: createNewWalletReducer,
     [IMPORT_NEW_ADDRESS_STORE_NAME]: importAddressReducer,
     [LATEST_TRANSACTIONS_STORE_NAME]: latestTransactionsReducer,
-    [ACCOUNT_ADDRESSES_STORE_NAME]: accountAddressesReducer
+    [ACCOUNT_ADDRESSES_STORE_NAME]: accountAddressesReducer,
+    [WALLET_INFO_STORE_NAME]: walletInfoReducer,
+    [SEND_TRANSACTION_STORE_NAME]: sendTransactionReducer,
+    [ACCOUNT_TRANSACTIONS_STORE_NAME]: accountTransactionsReducer
 }
 
 const rootReducer = combineReducers(reducerList);

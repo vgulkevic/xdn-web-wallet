@@ -17,7 +17,7 @@ const {
         entityNameInStore: "latestTransactions",
         thunkName: "/latestTransactions/get",
         thunkUrl: (arg) => {
-            return `/latest-transactions`
+            return `/transactions`
         },
         showToastOnFail: true,
 

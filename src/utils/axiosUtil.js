@@ -6,21 +6,31 @@ const client = axios.create({
     headers: {}
 });
 
-client.interceptors.response.use((response) => response, (error) => {
-    if (error.response && error.response.data && error.response.data.message) {
-        if (error.response.data.message !== "No message available")
-            throw new Error(error.response.data.message);
-        else
-            throw new Error("Sorry, something went wrong");
-    } else if (error.message) {
-        throw new Error(error.message);
-    }
-
-    throw error;
+const clientWithoutBaseUrl = axios.create({
+    headers: {}
 });
+
+[client, clientWithoutBaseUrl].forEach((cl) => {
+    cl.interceptors.response.use((response) => response, (error) => {
+        if (error.response && error.response.data && error.response.data.message) {
+            if (error.response.data.message !== "No message available")
+                throw new Error(error.response.data.message);
+            else
+                throw new Error("Sorry, something went wrong");
+        } else if (error.message) {
+            throw new Error(error.message);
+        }
+
+        throw error;
+    });
+})
 
 export function getHttpClient() {
     return client;
+}
+
+export function getHttpClientWithoutBaseUrl() {
+    return clientWithoutBaseUrl;
 }
 
 export function geHttpClientWithApiKey({getState}) {
