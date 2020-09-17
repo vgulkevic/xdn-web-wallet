@@ -2,7 +2,7 @@ import axios from "axios";
 import {authenticateUserStateNames, USER_SESSION_STORE_NAME} from "../redux/userSessionSlice";
 
 const client = axios.create({
-    baseURL: 'http://localhost:3050',
+    baseURL: 'https://api.digitalnote.org/',
     headers: {}
 });
 

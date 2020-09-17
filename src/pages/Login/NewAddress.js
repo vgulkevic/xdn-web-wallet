@@ -31,7 +31,6 @@ export const NewAddress = () => {
     useEffect(() => {
         if (initialised) {
             dispatch(createNewWallet());
-            console.log("create new wallet");
         }
     }, [dispatch, initialised]);
 

@@ -1,7 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {geHttpClientWithApiKey} from "../../utils/axiosUtil";
 import {notifierSlice} from "../../components/Notifier/notifierSlice";
-import {LOCAL_DEVELOPMENT, PROFILE} from "../../profile";
 
 export function createGetSliceActionFactory(params) {
     if (!params.actionName) {
@@ -56,13 +55,8 @@ export function createGetSliceActionFactory(params) {
                 }
             }
 
-            if (PROFILE === LOCAL_DEVELOPMENT && params.debugPromise) {
-                const res = await params.debugPromise();
-                return res.data;
-            } else {
-                const res = await geHttpClientWithApiKey(thunkAPI).get(getUrl);
-                return res.data;
-            }
+            const res = await geHttpClientWithApiKey(thunkAPI).get(getUrl);
+            return res.data;
         }
     );
 
