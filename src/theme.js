@@ -17,6 +17,7 @@ let theme = createMuiTheme({
     },
     typography: {
         fontFamily: 'Arimo, Helvetica, Arial, sans-serif',
+        fontSize: 16,
         button: {
             fontFamily: "'Arimo', 'Helvetica', 'Arial', sans-serif",
             textTransform: "none",

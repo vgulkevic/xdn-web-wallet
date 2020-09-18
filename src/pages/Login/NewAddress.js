@@ -77,7 +77,7 @@ export const NewAddress = () => {
 
                             <Grid item xs={12} style={{paddingBottom: '30px'}}>
                                 <SimpleInput type={'text'}
-                                             label={'Copy and paste in the above key to login into your new wallet'}
+                                             label={'Copy and paste in the above key to proceed'}
                                              value={privateKeyConfirmation}
                                              setter={setPrivateKeyConfirmation}
                                 />

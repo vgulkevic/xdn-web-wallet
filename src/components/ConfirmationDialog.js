@@ -11,7 +11,7 @@ export const ConfirmationDialogWithTextInput = ({title, description, open, cance
     const [showValidation, setShowValidation] = useState(false);
 
     const apply = () => {
-        if (confirmationPrompt === "continue" || !confirmationRequired) {
+        if ((confirmationPrompt || "").toLowerCase() === "continue" || !confirmationRequired) {
             applyCallback();
             onClose();
         } else {
@@ -54,7 +54,7 @@ export const ConfirmationDialogWithTextInput = ({title, description, open, cance
                         <br/>
                         {confirmationRequired &&
                         <>
-                            To confirm, please type <b>continue</b> in the box below
+                            <div style={{textAlign: 'center', textDecoration: `underline`, paddingTop: '15px'}}>To confirm, please type <b>continue</b> in the box below</div>
                             <SimpleInput
                                 value={confirmationPrompt}
                                 type={'text'}

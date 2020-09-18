@@ -163,13 +163,13 @@ export const SidebarMenu = () => {
                         <List style={{paddingTop: '50px'}}>
                             <MenuItem text={'Settings'} icon={<SettingsIcon color={iconColor}/>} selected={isSelected(SETTINGS_MENU_ITEM)} path={SETTINGS_PATH}/>
 
-                            <ListItem button>
+                            <ListItem button onClick={() => {
+                                window.localStorage.removeItem('user');
+                                dispatch(resetState());
+                                history.push('/set-up');
+                            }}>
                                 <ListItemIcon><ExitToAppIcon color={iconColor}/></ListItemIcon>
-                                <ListItemText primary={'Logout'} onClick={() => {
-                                    window.localStorage.removeItem('user');
-                                    dispatch(resetState());
-                                    history.push('/set-up');
-                                }}/>
+                                <ListItemText primary={'Logout'}/>
                             </ListItem>
                         </List>
                     </Drawer>
