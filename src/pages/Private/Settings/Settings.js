@@ -31,6 +31,14 @@ export const Settings = () => {
         }
     }, [dispatch, walletInfo]);
 
+    const getMoneySupply = (info) => {
+        // burn addresses:
+        // 1. dMsop93F7hbLSA2d666tSPjB2NXSAfXpeU
+        // 2. daigDQ7VxAFwmhh59HstA53KYD5a4q81N5
+        // 3. dVibZ11CVyiso4Kw3ZLAHp7Wn77dXuvq1d
+        return parseInt(info.moneysupply) - 1000000006 - 1000000006 - 1000000006;
+    }
+
     return (
         <>
             <Grid container
@@ -55,13 +63,18 @@ export const Settings = () => {
                                             <ServerInfoField walletInfo={walletInfo} fieldName={'version'} label="Version"/>
                                             <ServerInfoField walletInfo={walletInfo} fieldName={'protocolversion'} label="Protocol version"/>
                                             <ServerInfoField walletInfo={walletInfo} fieldName={'paytxfee'} label="Transaction fee"/>
-                                            <ServerInfoField walletInfo={walletInfo} fieldName={'moneysupply'} label="Money supply"/>
+                                            <Grid item xs={12} sm={6}>
+                                                <SimpleInput type={'text'}
+                                                             label={'Money supply'}
+                                                             value={getMoneySupply(walletInfo) + ""}
+                                                             disabled={true}
+                                                />
+                                            </Grid>
                                             <ServerInfoField walletInfo={walletInfo} fieldName={'connections'} label="Connections"/>
 
                                             <ServerInfoField walletInfo={walletInfo} fieldName={'blocks'} label="Blocks"/>
                                             <ServerInfoField walletInfo={walletInfo} fieldName={'timeoffset'} label="Time offset"/>
 
-                                            {/*<ServerInfoField walletInfo={walletInfo} fieldName={'moneysupply'}/>*/}
                                             <ServerInfoField walletInfo={walletInfo} fieldName={'testnet'} label="Testnet"/>
                                             <ServerInfoField walletInfo={walletInfo} fieldName={'keypoololdest'} label="Key pool oldest"/>
                                             <ServerInfoField walletInfo={walletInfo} fieldName={'keypoolsize'} label="Key pool size"/>
