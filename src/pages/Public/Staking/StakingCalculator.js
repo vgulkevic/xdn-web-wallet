@@ -1,34 +1,37 @@
 import React, {useEffect, useState} from "react";
-import {SingleContainerLayout} from "../../components/layout/SingleContainerLayout";
 import Grid from "@material-ui/core/Grid";
-import Title from "../../components/Title";
+import Title from "../../../components/Title";
+import {SingleContainerLayout} from "../../../components/layout/SingleContainerLayout";
 import {useDispatch, useSelector} from "react-redux";
-import {GET_XDN_PRICE_STORE_NAME, getGetXdnPrice, getGetXdnPriceStateNames} from "./redux/getXdnPriceSlice";
-import {PageLoader} from "../../components/PageLoader";
-import {GET_BTC_USD_PRICE_STORE_NAME, getGetBtcUsdPrice, getGetBtcUsdPriceStateNames} from "./redux/getBtcUsdPriceSlice";
-import SimpleInput from "../../components/input/SimpleInput";
-import {RewardCalculator} from "./RewardCalculator";
+import {GET_XDN_PRICE_STORE_NAME, getGetXdnPrice, getGetXdnPriceStateNames} from "../redux/getXdnPriceSlice";
+import {GET_BTC_USD_PRICE_STORE_NAME, getGetBtcUsdPrice, getGetBtcUsdPriceStateNames} from "../redux/getBtcUsdPriceSlice";
+import {PageLoader} from "../../../components/PageLoader";
+import SimpleInput from "../../../components/input/SimpleInput";
+import {StakingPoolCalculator} from "./StakingPoolCalculator";
+import {MyStakingCalculator} from "./MyStakingCalculator";
 
-export const MasternodeCalculator = () => {
+export const StakingCalculator = () => {
     const dispatch = useDispatch();
 
     const [xdnPrice, setXdnPrice] = useState("");
     const [btcUsdPrice, setBtcUsdPrice] = useState("");
 
-    const [masternodePrice, setMasternodePrice] = useState('2000000');
-
     const [blocksProcessedPerHourMax] = useState('30');
     const [blocksProcessedPerHourEst] = useState('17');
 
-    const [rewardsPerBlock] = useState('100');
+    const [blocksProcessedPerDayMax] = useState(parseInt(blocksProcessedPerHourMax) * 24);
+    const [blocksProcessedPerDayEst] = useState(parseInt(blocksProcessedPerHourEst) * 24);
 
-    const [blocksProcessedPerDayMax] = useState(parseInt(blocksProcessedPerHourMax)*24);
-    const [blocksProcessedPerDayEst] = useState(parseInt(blocksProcessedPerHourEst)*24);
+    const [rewardsPerBlock] = useState('150');
 
-    const [rewardsPaidToMNPerDayMax] = useState((parseInt(blocksProcessedPerHourMax)*24)*rewardsPerBlock);
-    const [rewardsPaidToMNPerDayEst] = useState((parseInt(blocksProcessedPerHourEst)*24)*rewardsPerBlock);
+    const [rewardsPaidToStakersPerDayMax] = useState((parseInt(blocksProcessedPerHourMax) * 24) * rewardsPerBlock);
+    const [rewardsPaidToStakersPerDayEst] = useState((parseInt(blocksProcessedPerHourEst) * 24) * rewardsPerBlock);
 
-    const [masternodesCount, setMasternodesCount] = useState('80');
+    const [stakingPool] = useState('2000000000');
+    const [stakingAmount, setStakingAmount] = useState('2000000');
+
+    const [usdRewardPerOneXdnStackedPerDayMax, setUsdRewardPerOneXdnStackedPerDayMax] = useState('');
+    const [usdRewardPerOneXdnStackedPerDayEst, setUsdRewardPerOneXdnStackedPerDayEst] = useState('');
 
     const {
         [getGetXdnPriceStateNames.entity]: bittrexXdnPrice,
@@ -66,20 +69,20 @@ export const MasternodeCalculator = () => {
         }
     }
 
-    const getMasternodePriceInUsd = () => {
-        try {
-            const res = parseFloat(xdnPrice) * parseFloat(btcUsdPrice) * parseFloat(masternodePrice);
-            return isNaN(res) ? "" : res;
-        } catch (err) {
-            return '';
-        }
-    }
-
     const convertXdnToUsd = (val) => {
         try {
             return parseInt(val) * getXdnPriceInUsd();
         } catch (err) {
             return ''
+        }
+    }
+
+    const getStakingPoolCost = () => {
+        try {
+            const res = parseFloat(getXdnPriceInUsd()) * parseInt(stakingPool);
+            return (isNaN(res) ? "" : parseFloat(res).toFixed(3) + "");
+        } catch (err) {
+            return '';
         }
     }
 
@@ -89,7 +92,7 @@ export const MasternodeCalculator = () => {
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <Title children={"Masternode ROI Calculator"}/>
+                            <Title children={"Staking ROI Calculator"}/>
                         </Grid>
 
                         {
@@ -123,38 +126,6 @@ export const MasternodeCalculator = () => {
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                        <Grid container spacing={2}>
-                                            <Grid item xs={12} sm={6}>
-                                                <SimpleInput
-                                                    type={'text'}
-                                                    label={'Masternode price'}
-                                                    value={masternodePrice}
-                                                    setter={setMasternodePrice}
-                                                />
-                                            </Grid>
-
-                                            <Grid item xs={12} sm={6}>
-                                                <SimpleInput
-                                                    type={'text'}
-                                                    label={'Masternode price (USD)'}
-                                                    value={getMasternodePriceInUsd()}
-                                                    disabled={true}
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid item xs={12}>
-                                        <SimpleInput
-                                            type={'text'}
-                                            label={'Number of all masternodes'}
-                                            value={masternodesCount}
-                                            setter={setMasternodesCount}
-                                        />
-                                    </Grid>
-
-
-                                    <Grid item xs={12}>
                                         <Title>Rewards</Title>
                                     </Grid>
 
@@ -186,7 +157,7 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards per block to MN\'s Max'}
+                                                    label={'Rewards per block to Stakers Max'}
                                                     value={rewardsPerBlock}
                                                     disabled={true}
                                                 />
@@ -195,8 +166,8 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards paid to MN\'s per day Max'}
-                                                    value={rewardsPaidToMNPerDayMax}
+                                                    label={'Rewards paid to Stakers per day Max'}
+                                                    value={rewardsPaidToStakersPerDayMax}
                                                     disabled={true}
                                                 />
                                             </Grid>
@@ -205,20 +176,10 @@ export const MasternodeCalculator = () => {
                                                 <SimpleInput
                                                     type={'text'}
                                                     label={'Total in USD Max'}
-                                                    value={convertXdnToUsd(rewardsPaidToMNPerDayMax)}
+                                                    value={convertXdnToUsd(rewardsPaidToStakersPerDayMax)}
                                                     disabled={true}
                                                 />
                                             </Grid>
-
-
-                                            <RewardCalculator label={'Max'}
-                                                              costOfMasternodeInUsd={getMasternodePriceInUsd()}
-                                                              blocksPerDay={blocksProcessedPerDayMax}
-                                                              masternodesCount={masternodesCount}
-                                                              rewardsPaidToMNPerDayMax={rewardsPaidToMNPerDayMax}
-                                                              xdnPriceInUsd={getXdnPriceInUsd()}
-                                            />
-
                                         </Grid>
                                     </Grid>
 
@@ -250,7 +211,7 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards per block to MN\'s Estimate'}
+                                                    label={'Rewards per block to Stakers Estimate'}
                                                     value={rewardsPerBlock}
                                                     disabled={true}
                                                 />
@@ -259,8 +220,8 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards paid to MN\'s per day Estimate'}
-                                                    value={rewardsPaidToMNPerDayEst}
+                                                    label={'Rewards paid to Stakers per day Estimate'}
+                                                    value={rewardsPaidToStakersPerDayEst}
                                                     disabled={true}
                                                 />
                                             </Grid>
@@ -269,23 +230,107 @@ export const MasternodeCalculator = () => {
                                                 <SimpleInput
                                                     type={'text'}
                                                     label={'Total in USD Estimate'}
-                                                    value={convertXdnToUsd(rewardsPaidToMNPerDayEst)}
+                                                    value={convertXdnToUsd(rewardsPaidToStakersPerDayEst)}
                                                     disabled={true}
                                                 />
                                             </Grid>
 
 
+                                            <Grid item style={{paddingTop: '30px'}}/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <Grid container spacing={2}>
+
+                                            <Grid item xs={12}>
+                                                <Title>Staking pool</Title>
+                                            </Grid>
+
+                                            <Grid item xs={12}>
+                                                <SimpleInput
+                                                    type={'text'}
+                                                    label={'Staking pool'}
+                                                    value={stakingPool}
+                                                    disabled={true}
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={12}>
+                                                <SimpleInput
+                                                    type={'text'}
+                                                    label={`Staking pool cost`}
+                                                    value={`$${getStakingPoolCost()}`}
+                                                    disabled={true}
+                                                />
+                                            </Grid>
 
                                             <Grid item style={{paddingTop: '30px'}}/>
+                                        </Grid>
+                                    </Grid>
 
-                                            <RewardCalculator label={'Estimate'}
-                                                              costOfMasternodeInUsd={getMasternodePriceInUsd()}
-                                                              blocksPerDay={blocksProcessedPerDayEst}
-                                                              masternodesCount={masternodesCount}
-                                                              rewardsPaidToMNPerDayMax={rewardsPaidToMNPerDayEst}
-                                                              xdnPriceInUsd={getXdnPriceInUsd()}
-                                            />
 
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid container spacing={2}>
+                                            <StakingPoolCalculator
+                                                label={"Max"}
+                                                stakingPool={stakingPool}
+                                                stakingRewardsPerDay={rewardsPaidToStakersPerDayMax}
+                                                rewardPerOneXdnPerDaySetter={setUsdRewardPerOneXdnStackedPerDayMax}
+                                                xdnPriceInUsd={getXdnPriceInUsd()}/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid container spacing={2}>
+                                            <StakingPoolCalculator
+                                                label={"Est"}
+                                                stakingPool={stakingPool}
+                                                stakingRewardsPerDay={rewardsPaidToStakersPerDayEst}
+                                                rewardPerOneXdnPerDaySetter={setUsdRewardPerOneXdnStackedPerDayEst}
+                                                xdnPriceInUsd={getXdnPriceInUsd()}/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid item style={{paddingTop: '30px'}}/>
+
+                                    <Grid item xs={12}>
+                                        <Grid container spacing={2}>
+
+                                            <Grid item xs={12}>
+                                                <Title>My stake</Title>
+                                            </Grid>
+
+                                            <Grid item xs={12}>
+                                                <SimpleInput
+                                                    type={'text'}
+                                                    label={'Staking amount'}
+                                                    value={stakingAmount}
+                                                    setter={setStakingAmount}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid container spacing={2}>
+                                            <MyStakingCalculator
+                                                label={"Max"}
+                                                stakingAmount={stakingAmount}
+                                                stakingRewardsPerDay={rewardsPaidToStakersPerDayMax}
+                                                usdRewardPerOneXdnStackedPerDay={usdRewardPerOneXdnStackedPerDayMax}
+                                                xdnPriceInUsd={getXdnPriceInUsd()}/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={6}>
+                                        <Grid container spacing={2}>
+                                            <MyStakingCalculator
+                                                label={"Est"}
+                                                stakingAmount={stakingAmount}
+                                                stakingRewardsPerDay={rewardsPaidToStakersPerDayEst}
+                                                usdRewardPerOneXdnStackedPerDay={usdRewardPerOneXdnStackedPerDayEst}
+                                                xdnPriceInUsd={getXdnPriceInUsd()}/>
                                         </Grid>
                                     </Grid>
                                 </>

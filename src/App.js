@@ -13,6 +13,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import {AppLoadError} from "./components/AppLoadError";
 import {PageLoader} from "./components/PageLoader";
 import {MasternodeCalculator} from "./pages/Public/MasternodeCalculator";
+import {StakingCalculator} from "./pages/Public/Staking/StakingCalculator";
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -57,6 +58,7 @@ export const App = () => {
                 <BrowserRouter>
                     <Switch>
                         <Route path="/masternode-calculator" render={(props) => <MasternodeCalculator {...props}/>}/>
+                        <Route path="/staking-calculator" render={(props) => <StakingCalculator {...props}/>}/>
                         <Route path="/" render={(props) => getView(props)}/>
                     </Switch>
                 </BrowserRouter>
