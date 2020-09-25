@@ -9,6 +9,7 @@ import {PageLoader} from "../../../components/PageLoader";
 import SimpleInput from "../../../components/input/SimpleInput";
 import {StakingPoolCalculator} from "./StakingPoolCalculator";
 import {MyStakingCalculator} from "./MyStakingCalculator";
+import '../calculatorStyles.css';
 
 export const StakingCalculator = () => {
     const dispatch = useDispatch();
@@ -129,17 +130,17 @@ export const StakingCalculator = () => {
                                         <Title>Rewards</Title>
                                     </Grid>
 
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} md={6}>
                                         <Grid container spacing={2}>
                                             <Grid item>
-                                                Theoretical Max that can be earned<br/><br/>
+                                                <u>Theoretical Max</u> that can be earned<br/><br/>
                                                 <b>Blocks processed:</b>
                                             </Grid>
 
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Blocks Processed Per Hour Max'}
+                                                    label={'Blocks Processed Per Hour'}
                                                     value={blocksProcessedPerHourMax}
                                                     disabled={true}
                                                 />
@@ -148,7 +149,7 @@ export const StakingCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Blocks Processed Per Day Max'}
+                                                    label={'Blocks Processed Per Day'}
                                                     value={blocksProcessedPerDayMax}
                                                     disabled={true}
                                                 />
@@ -157,7 +158,7 @@ export const StakingCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards per block to Stakers Max'}
+                                                    label={'Rewards per block to Stakers'}
                                                     value={rewardsPerBlock}
                                                     disabled={true}
                                                 />
@@ -166,7 +167,7 @@ export const StakingCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards paid to Stakers per day Max'}
+                                                    label={'Rewards paid to Stakers per day'}
                                                     value={rewardsPaidToStakersPerDayMax}
                                                     disabled={true}
                                                 />
@@ -175,7 +176,7 @@ export const StakingCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Total in USD Max'}
+                                                    label={'Total in USD'}
                                                     value={convertXdnToUsd(rewardsPaidToStakersPerDayMax)}
                                                     disabled={true}
                                                 />
@@ -183,17 +184,17 @@ export const StakingCalculator = () => {
                                         </Grid>
                                     </Grid>
 
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} md={6}>
                                         <Grid container spacing={2}>
                                             <Grid item>
-                                                Current Estimated revenue earned<br/><br/>
+                                                <u>Current Estimated</u> revenue earned<br/><br/>
                                                 <b>Blocks processed:</b>
                                             </Grid>
 
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Blocks Processed Per Hour Estimate'}
+                                                    label={'Blocks Processed Per Hour'}
                                                     value={blocksProcessedPerHourEst}
                                                     disabled={true}
                                                 />
@@ -202,7 +203,7 @@ export const StakingCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Blocks Processed Per Day Estimate'}
+                                                    label={'Blocks Processed Per Day'}
                                                     value={blocksProcessedPerDayEst}
                                                     disabled={true}
                                                 />
@@ -211,7 +212,7 @@ export const StakingCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards per block to Stakers Estimate'}
+                                                    label={'Rewards per block to Stakers'}
                                                     value={rewardsPerBlock}
                                                     disabled={true}
                                                 />
@@ -220,7 +221,7 @@ export const StakingCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards paid to Stakers per day Estimate'}
+                                                    label={'Rewards paid to Stakers per day'}
                                                     value={rewardsPaidToStakersPerDayEst}
                                                     disabled={true}
                                                 />
@@ -229,7 +230,7 @@ export const StakingCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Total in USD Estimate'}
+                                                    label={'Total in USD'}
                                                     value={convertXdnToUsd(rewardsPaidToStakersPerDayEst)}
                                                     disabled={true}
                                                 />
@@ -270,10 +271,10 @@ export const StakingCalculator = () => {
                                     </Grid>
 
 
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} md={6}>
                                         <Grid container spacing={2}>
                                             <StakingPoolCalculator
-                                                label={"Max"}
+                                                label={""}
                                                 stakingPool={stakingPool}
                                                 stakingRewardsPerDay={rewardsPaidToStakersPerDayMax}
                                                 rewardPerOneXdnPerDaySetter={setUsdRewardPerOneXdnStackedPerDayMax}
@@ -281,10 +282,10 @@ export const StakingCalculator = () => {
                                         </Grid>
                                     </Grid>
 
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} md={6}>
                                         <Grid container spacing={2}>
                                             <StakingPoolCalculator
-                                                label={"Est"}
+                                                label={""}
                                                 stakingPool={stakingPool}
                                                 stakingRewardsPerDay={rewardsPaidToStakersPerDayEst}
                                                 rewardPerOneXdnPerDaySetter={setUsdRewardPerOneXdnStackedPerDayEst}
@@ -312,10 +313,10 @@ export const StakingCalculator = () => {
                                         </Grid>
                                     </Grid>
 
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} md={6}>
                                         <Grid container spacing={2}>
                                             <MyStakingCalculator
-                                                label={"Max"}
+                                                label={""}
                                                 stakingAmount={stakingAmount}
                                                 stakingRewardsPerDay={rewardsPaidToStakersPerDayMax}
                                                 usdRewardPerOneXdnStackedPerDay={usdRewardPerOneXdnStackedPerDayMax}
@@ -323,10 +324,10 @@ export const StakingCalculator = () => {
                                         </Grid>
                                     </Grid>
 
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} md={6}>
                                         <Grid container spacing={2}>
                                             <MyStakingCalculator
-                                                label={"Est"}
+                                                label={""}
                                                 stakingAmount={stakingAmount}
                                                 stakingRewardsPerDay={rewardsPaidToStakersPerDayEst}
                                                 usdRewardPerOneXdnStackedPerDay={usdRewardPerOneXdnStackedPerDayEst}

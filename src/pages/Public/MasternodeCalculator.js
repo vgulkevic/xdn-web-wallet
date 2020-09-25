@@ -8,6 +8,7 @@ import {PageLoader} from "../../components/PageLoader";
 import {GET_BTC_USD_PRICE_STORE_NAME, getGetBtcUsdPrice, getGetBtcUsdPriceStateNames} from "./redux/getBtcUsdPriceSlice";
 import SimpleInput from "../../components/input/SimpleInput";
 import {RewardCalculator} from "./RewardCalculator";
+import './calculatorStyles.css';
 
 export const MasternodeCalculator = () => {
     const dispatch = useDispatch();
@@ -22,11 +23,11 @@ export const MasternodeCalculator = () => {
 
     const [rewardsPerBlock] = useState('100');
 
-    const [blocksProcessedPerDayMax] = useState(parseInt(blocksProcessedPerHourMax)*24);
-    const [blocksProcessedPerDayEst] = useState(parseInt(blocksProcessedPerHourEst)*24);
+    const [blocksProcessedPerDayMax] = useState(parseInt(blocksProcessedPerHourMax) * 24);
+    const [blocksProcessedPerDayEst] = useState(parseInt(blocksProcessedPerHourEst) * 24);
 
-    const [rewardsPaidToMNPerDayMax] = useState((parseInt(blocksProcessedPerHourMax)*24)*rewardsPerBlock);
-    const [rewardsPaidToMNPerDayEst] = useState((parseInt(blocksProcessedPerHourEst)*24)*rewardsPerBlock);
+    const [rewardsPaidToMNPerDayMax] = useState((parseInt(blocksProcessedPerHourMax) * 24) * rewardsPerBlock);
+    const [rewardsPaidToMNPerDayEst] = useState((parseInt(blocksProcessedPerHourEst) * 24) * rewardsPerBlock);
 
     const [masternodesCount, setMasternodesCount] = useState('80');
 
@@ -158,17 +159,17 @@ export const MasternodeCalculator = () => {
                                         <Title>Rewards</Title>
                                     </Grid>
 
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} md={6}>
                                         <Grid container spacing={2}>
                                             <Grid item>
-                                                Theoretical Max that can be earned<br/><br/>
+                                                <u>Theoretical Max</u> that can be earned<br/><br/>
                                                 <b>Blocks processed:</b>
                                             </Grid>
 
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Blocks Processed Per Hour Max'}
+                                                    label={'Blocks Processed Per Hour'}
                                                     value={blocksProcessedPerHourMax}
                                                     disabled={true}
                                                 />
@@ -177,7 +178,7 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Blocks Processed Per Day Max'}
+                                                    label={'Blocks Processed Per Day'}
                                                     value={blocksProcessedPerDayMax}
                                                     disabled={true}
                                                 />
@@ -186,7 +187,7 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards per block to MN\'s Max'}
+                                                    label={'Rewards per block to MN\'s'}
                                                     value={rewardsPerBlock}
                                                     disabled={true}
                                                 />
@@ -195,7 +196,7 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards paid to MN\'s per day Max'}
+                                                    label={'Rewards paid to MN\'s per day'}
                                                     value={rewardsPaidToMNPerDayMax}
                                                     disabled={true}
                                                 />
@@ -204,14 +205,14 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Total in USD Max'}
+                                                    label={'Total in USD'}
                                                     value={convertXdnToUsd(rewardsPaidToMNPerDayMax)}
                                                     disabled={true}
                                                 />
                                             </Grid>
 
 
-                                            <RewardCalculator label={'Max'}
+                                            <RewardCalculator label={''}
                                                               costOfMasternodeInUsd={getMasternodePriceInUsd()}
                                                               blocksPerDay={blocksProcessedPerDayMax}
                                                               masternodesCount={masternodesCount}
@@ -222,17 +223,17 @@ export const MasternodeCalculator = () => {
                                         </Grid>
                                     </Grid>
 
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} md={6}>
                                         <Grid container spacing={2}>
                                             <Grid item>
-                                                Current Estimated revenue earned<br/><br/>
+                                                <u>Current Estimated</u> revenue earned<br/><br/>
                                                 <b>Blocks processed:</b>
                                             </Grid>
 
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Blocks Processed Per Hour Estimate'}
+                                                    label={'Blocks Processed Per Hour'}
                                                     value={blocksProcessedPerHourEst}
                                                     disabled={true}
                                                 />
@@ -241,7 +242,7 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Blocks Processed Per Day Estimate'}
+                                                    label={'Blocks Processed Per Day'}
                                                     value={blocksProcessedPerDayEst}
                                                     disabled={true}
                                                 />
@@ -250,7 +251,7 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards per block to MN\'s Estimate'}
+                                                    label={'Rewards per block to MN\'s'}
                                                     value={rewardsPerBlock}
                                                     disabled={true}
                                                 />
@@ -259,7 +260,7 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Rewards paid to MN\'s per day Estimate'}
+                                                    label={'Rewards paid to MN\'s per day'}
                                                     value={rewardsPaidToMNPerDayEst}
                                                     disabled={true}
                                                 />
@@ -268,17 +269,16 @@ export const MasternodeCalculator = () => {
                                             <Grid item xs={12}>
                                                 <SimpleInput
                                                     type={'text'}
-                                                    label={'Total in USD Estimate'}
+                                                    label={'Total in USD'}
                                                     value={convertXdnToUsd(rewardsPaidToMNPerDayEst)}
                                                     disabled={true}
                                                 />
                                             </Grid>
 
 
-
                                             <Grid item style={{paddingTop: '30px'}}/>
 
-                                            <RewardCalculator label={'Estimate'}
+                                            <RewardCalculator label={''}
                                                               costOfMasternodeInUsd={getMasternodePriceInUsd()}
                                                               blocksPerDay={blocksProcessedPerDayEst}
                                                               masternodesCount={masternodesCount}

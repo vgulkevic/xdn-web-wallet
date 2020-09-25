@@ -39,7 +39,7 @@ export const MyStakingCalculator = ({label, xdnPriceInUsd, stakingAmount, usdRew
             <Grid item xs={12}>
                 <SimpleInput
                     type={'text'}
-                    label={`USD reward estimate for stake per day ${label}`}
+                    label={`Reward estimate for stake per day ${label}`}
                     value={`$${usdRewardForStakePerDay}`}
                     disabled={true}
                 />
@@ -48,7 +48,7 @@ export const MyStakingCalculator = ({label, xdnPriceInUsd, stakingAmount, usdRew
             <Grid item xs={12}>
                 <SimpleInput
                     type={'text'}
-                    label={`USD reward estimate for stake per week ${label}`}
+                    label={`Reward estimate for stake per week ${label}`}
                     value={`$${parseFloat(usdRewardForStakePerDay) * 7}`}
                     disabled={true}
                 />
@@ -57,7 +57,7 @@ export const MyStakingCalculator = ({label, xdnPriceInUsd, stakingAmount, usdRew
             <Grid item xs={12}>
                 <SimpleInput
                     type={'text'}
-                    label={`USD reward estimate for stake per month ${label}`}
+                    label={`Reward estimate for stake per month ${label}`}
                     value={`$${parseFloat(usdRewardForStakePerDay) * 365 / 12}`}
                     disabled={true}
                 />
@@ -66,7 +66,7 @@ export const MyStakingCalculator = ({label, xdnPriceInUsd, stakingAmount, usdRew
             <Grid item xs={12}>
                 <SimpleInput
                     type={'text'}
-                    label={`USD reward estimate for stake per year ${label}`}
+                    label={`Reward estimate for stake per year ${label}`}
                     value={`$${parseFloat(usdRewardForStakePerDay) * 365}`}
                     disabled={true}
                 />

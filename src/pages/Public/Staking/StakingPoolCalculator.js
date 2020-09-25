@@ -32,7 +32,7 @@ export const StakingPoolCalculator = ({label, stakingRewardsPerDay, stakingPool,
             <Grid item xs={12}>
                 <SimpleInput
                     type={'text'}
-                    label={`USD Reward estimate per 1 XDN per day ${label} `}
+                    label={`Reward estimate per 1 XDN per day ${label} `}
                     value={`$${usdRewardPerOneXdnStackedPerDay}`}
                     disabled={true}
                 />
@@ -41,7 +41,7 @@ export const StakingPoolCalculator = ({label, stakingRewardsPerDay, stakingPool,
             <Grid item xs={12}>
                 <SimpleInput
                     type={'text'}
-                    label={`USD Reward estimate per 1 XDN per week ${label} `}
+                    label={`Reward estimate per 1 XDN per week ${label} `}
                     value={`$${(parseFloat(usdRewardPerOneXdnStackedPerDay) * 7).toFixed(20)}`}
                     disabled={true}
                 />
@@ -50,7 +50,7 @@ export const StakingPoolCalculator = ({label, stakingRewardsPerDay, stakingPool,
             <Grid item xs={12}>
                 <SimpleInput
                     type={'text'}
-                    label={`USD Reward estimate per 1 XDN per month ${label} `}
+                    label={`Reward estimate per 1 XDN per month ${label} `}
                     value={`$${(parseFloat(usdRewardPerOneXdnStackedPerDay) * 365 / 12).toFixed(20)}`}
                     disabled={true}
                 />
@@ -59,7 +59,7 @@ export const StakingPoolCalculator = ({label, stakingRewardsPerDay, stakingPool,
             <Grid item xs={12}>
                 <SimpleInput
                     type={'text'}
-                    label={`USD Reward estimate per 1 XDN per year ${label} `}
+                    label={`Reward estimate per 1 XDN per year ${label} `}
                     value={`$${(parseFloat(usdRewardPerOneXdnStackedPerDay) * 365).toFixed(20)}`}
                     disabled={true}
                 />
