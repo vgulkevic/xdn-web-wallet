@@ -70,7 +70,7 @@ export const AuthenticatedRoute = () => {
                                         <Route exact path={TRANSACTIONS_PATH} render={(props) => <Transactions {...props} />}/>
                                         {/*<Route exact path={ADDRESSES_PATH} render={(props) => <Addresses {...props} />}/>*/}
                                         <Route exact path={MASTERNODES_PATH} render={(props) => <Masternodes {...props} />}/>
-                                        {/*<Route exact path={MESSAGES_PATH} render={(props) => <Messages {...props} />}/>*/}
+                                        <Route exact path={MESSAGES_PATH} render={(props) => <Messages {...props} />}/>
                                         {/*<Route exact path={BLOCK_EXPLORER_PATH} render={(props) => <BlockExplorer {...props} />}/>*/}
                                         <Route exact path={SETTINGS_PATH} render={(props) => <Settings {...props} />}/>
 

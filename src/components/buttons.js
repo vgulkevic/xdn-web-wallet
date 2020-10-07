@@ -2,7 +2,7 @@ import React from "react";
 import CustomButton from "./CustomButton";
 import AddBoxOutlinedIcon from "@material-ui/icons/AddBoxOutlined";
 
-export const CreateNewButton = ({onClick, loading, ...props}) => {
+export const CreateNewButton = ({onClick, loading, overridenText, ...props}) => {
     return (
         <CustomButton variant="contained"
                       color="primary"
@@ -11,7 +11,7 @@ export const CreateNewButton = ({onClick, loading, ...props}) => {
                       loading={loading}
                       {...props}
         >
-            Create New
+            {overridenText ? overridenText : 'Create New'}
         </CustomButton>
     )
 }

@@ -21,7 +21,7 @@ const getDateTimeComparator = (valA, valB) => {
 }
 
 const timestampToDate = (timestamp) => {
-    return new Date(timestamp);
+    return timestamp instanceof Date ? timestamp : new Date(timestamp);
 }
 
 export const getFormattedTimestamp = (timestamp) => {

@@ -155,7 +155,7 @@ export const SidebarMenu = () => {
                             <MenuItem text={'Transactions'} icon={<AccountBalanceWalletIcon color={iconColor}/>} selected={isSelected(TRANSACTIONS_MENU_ITEM)} path={TRANSACTIONS_PATH}/>
                             {/*<MenuItem text={'Addresses'} icon={<ContactsIcon color={iconColor}/>} selected={isSelected(ADDRESSES_MENU_ITEM)} path={ADDRESSES_PATH}/>*/}
                             <MenuItem text={'Masternodes'} icon={<SettingsInputAntennaIcon color={iconColor}/>} selected={isSelected(MASTERNODES_MENU_ITEM)} path={MASTERNODES_PATH}/>
-                            {/*<MenuItem text={'Messages'} icon={<MessageIcon color={iconColor}/>} selected={isSelected(MESSAGES_MENU_ITEM)} path={MESSAGES_PATH}/>*/}
+                            <MenuItem text={'Messages'} icon={<MessageIcon color={iconColor}/>} selected={isSelected(MESSAGES_MENU_ITEM)} path={MESSAGES_PATH}/>
                             {/*<MenuItem text={'Block Explorer'} icon={<ExploreIcon color={iconColor}/>} selected={isSelected(BLOCK_EXPLORER_MENU_ITEM)} path={BLOCK_EXPLORER_PATH}/>*/}
                         </List>
                         <Divider/>
