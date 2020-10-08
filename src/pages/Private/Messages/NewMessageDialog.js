@@ -57,15 +57,15 @@ export const NewMessageDialog = ({open, handleClose}) => {
 
     useEffect(() => {
         if (messageSendCompleted){
-            resetState({
+            dispatch(resetState({
                 resetFunction: (state) => {
                     state[sendMessageStateNames.actionCompleted] = false;
                     return state;
                 }
-            });
+            }));
             handleClose();
         }
-    }, [messageSendCompleted, handleClose]);
+    }, [dispatch, messageSendCompleted, handleClose]);
 
     const getAddressesOptions = (addresses) => {
         return addresses.map((addr) => {

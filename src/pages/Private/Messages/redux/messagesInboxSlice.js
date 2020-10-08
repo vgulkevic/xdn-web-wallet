@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {createResetState} from "../../../../redux/utils/reducerFunctionsFactory";
 import {makeAsyncSliceActions} from "../../../../redux/utils/asyncSliceActionFactory";
 import {getHttpClient} from "../../../../utils/axiosUtil";
+import {enrichMessageModel} from "../util/messageUtil";
 
 
 const MESSAGES_STORE_NAME = 'MESSAGES_STORE_NAME';
@@ -54,7 +55,12 @@ const accountMessagesSlice = createSlice({
     name: 'accountMessages',
     initialState: initialState,
     reducers: {
-        resetState: (state, action) => createResetState(state, action, initialState)
+        resetState: (state, action) => createResetState(state, action, initialState),
+        newMessageUpdate: (state, action) => {
+            const newMessageUpdate = action.payload;
+            buildConversationObject(state[getAccountMessagesStateNames.entity], newMessageUpdate.data, newMessageUpdate.type === "messagesOut")
+            return state;
+        }
     },
     extraReducers: {
         ...getAccountMessagesExtraReducers,
@@ -64,6 +70,7 @@ const accountMessagesSlice = createSlice({
 
 const accountMessagesReducer = accountMessagesSlice.reducer;
 const resetState = accountMessagesSlice.actions.resetState;
+const newMessageUpdate = accountMessagesSlice.actions.newMessageUpdate;
 
 export {
     // store name
@@ -76,7 +83,8 @@ export {
     getAccountMessagesStateNames, sendMessageStateNames,
 
     // reducer actions
-    resetState,
+    resetState, newMessageUpdate,
+
 
     // main reducer
     accountMessagesReducer
@@ -90,41 +98,42 @@ const getMessageExcerpt = (text) => {
     if (text.length > 20) {
         return text.substring(0, 17) + "...";
     }
+
+    return text;
+}
+
+const buildConversationObject = (conversations, msg, outMessage) => {
+    if (!msg.to || !msg.from) {
+        return;
+    }
+
+    enrichMessageModel(msg, outMessage);
+
+    const conversationId = outMessage ? msg.from + "-" + msg.to : msg.to + "-" + msg.from;
+
+    if (!conversations[conversationId]) {
+        conversations[conversationId] = {
+            id: conversationId,
+            yourAddress: outMessage ? msg.from : msg.to,
+            theirAddress: outMessage ? msg.to : msg.from,
+            messages: [msg],
+            mostRecentTimeStamp: new Date(msg.received || msg.sent),
+            text: getMessageExcerpt(msg.text)
+        };
+    } else {
+        conversations[conversationId].messages.push(msg);
+
+        if (conversations[conversationId].mostRecentTimeStamp < new Date(msg.received || msg.sent)) {
+            conversations[conversationId].id = conversationId;
+            conversations[conversationId].yourAddress = outMessage ? msg.from : msg.to;
+            conversations[conversationId].theirAddress = outMessage ? msg.to : msg.from;
+            conversations[conversationId].mostRecentTimeStamp = new Date(msg.received || msg.sent)
+            conversations[conversationId].text = getMessageExcerpt(msg.text);
+        }
+    }
 }
 
 const mapToModel = (serverMgObj) => {
-    const buildConversationObject = (conversations, msg, outMessage) => {
-        if (!msg.to || !msg.from) {
-            return;
-        }
-
-        msg.isOutMessage = outMessage;
-        msg.timestamp = new Date(msg.received || msg.sent);
-        msg.author = msg.from;
-
-        const conversationId = outMessage ? msg.from + "-" + msg.to : msg.to + "-" + msg.from;
-
-        if (!conversations[conversationId]) {
-            conversations[conversationId] = {
-                id: conversationId,
-                yourAddress: outMessage ? msg.from : msg.to,
-                theirAddress: outMessage ? msg.to : msg.from,
-                messages: [msg],
-                mostRecentTimeStamp: new Date(msg.received || msg.sent),
-                text: getMessageExcerpt(msg.text)
-            };
-        } else {
-            conversations[conversationId].messages.push(msg);
-
-            if (conversations[conversationId].mostRecentTimeStamp < new Date(msg.received || msg.sent)) {
-                conversations[conversationId].id = conversationId;
-                conversations[conversationId].yourAddress = outMessage ? msg.from : msg.to;
-                conversations[conversationId].theirAddress = outMessage ? msg.to : msg.from;
-                conversations[conversationId].mostRecentTimeStamp = new Date(msg.received || msg.sent)
-                conversations[conversationId].text = getMessageExcerpt(msg.text);
-            }
-        }
-    }
     
     const conversations = {};
 

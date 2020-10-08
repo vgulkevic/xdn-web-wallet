@@ -10,9 +10,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import SimpleInput from "../../../../components/input/SimpleInput";
 import CustomButton from "../../../../components/CustomButton";
 import CloudOutlinedIcon from '@material-ui/icons/CloudOutlined';
-import {ConversationMessageText} from "./ConversationMessageText";
 import './Message.css'
-import {MESSAGES_STORE_NAME, resetState, sendMessage, sendMessageStateNames} from "../redux/messagesInboxSlice";
+import {MESSAGES_STORE_NAME, sendMessage, resetState, sendMessageStateNames} from "../redux/messagesInboxSlice";
+import {ConversationMessagesList} from "./ConversationMessagesList";
+import {setConversationMessages, resetState as resetConversationState, CONVERSATION_STATE_STORE_NAME} from "./redux/conversationStateSlice";
 
 const useStyles = makeStyles((theme) => ({
     conversationBody: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const ConversationDialog = ({open, handleClose, conversationMessages, yourAddress, theirAddress}) => {
+export const ConversationDialog = ({open, handleClose, conversationMessages, yourAddress, theirAddress, conversationId}) => {
     const messagesEndRef = useRef(null)
     const localClasses = useStyles();
     const classes = globalStyles();
@@ -34,92 +35,53 @@ export const ConversationDialog = ({open, handleClose, conversationMessages, you
         [sendMessageStateNames.loading]: messageSending
     } = useSelector(state => state[MESSAGES_STORE_NAME]);
 
-    const [newMessage, setNewMessage] = useState('');
 
+
+    const {
+        triggerScrollUpdate
+    } = useSelector(state => state[CONVERSATION_STATE_STORE_NAME]);
+
+    const [newMessage, setNewMessage] = useState('');
 
     const scrollToBottom = () => {
         if (messagesEndRef && messagesEndRef.current)
             messagesEndRef.current.scrollIntoView({behavior: "smooth"})
     }
 
-    useEffect(scrollToBottom, [conversationMessages]);
+    useEffect(() => {
+        dispatch(setConversationMessages({
+            messages: conversationMessages,
+            conversationId: conversationId
+        }));
+        return () => {
+            dispatch(resetConversationState());
+        }
+    }, [dispatch, conversationId, conversationMessages]);
 
     useEffect(() => {
-        if (messageSendCompleted){
-            resetState({
+        if (triggerScrollUpdate) {
+            scrollToBottom();
+            dispatch(resetConversationState({
+                resetFunction: (state) => {
+                    state['triggerScrollUpdate'] = false;
+                    return state;
+                }
+            }));
+        }
+    }, [dispatch, triggerScrollUpdate]);
+
+    useEffect(() => {
+        if (messageSendCompleted) {
+            setNewMessage('');
+            dispatch(resetState({
                 resetFunction: (state) => {
                     state[sendMessageStateNames.actionCompleted] = false;
                     return state;
                 }
-            });
+            }));
             // handleClose();
         }
-    }, [messageSendCompleted]);
-
-    const milliseconds = (h, m, s) => ((h * 60 * 60 + m * 60 + s) * 1000);
-
-    const renderMessages = () => {
-        const messages = conversationMessages.slice().sort((a, b) => {
-            return a.timestamp.getTime() - b.timestamp.getTime();
-        });
-
-        let i = 0;
-        let messageCount = messages.length;
-        let tempMessages = [];
-
-        while (i < messageCount) {
-            let previous = messages[i - 1];
-            let current = messages[i];
-            let next = messages[i + 1];
-            let isMine = current.isOutMessage;
-            let currentMoment = current.timestamp;
-            let prevBySameAuthor = false;
-            let nextBySameAuthor = false;
-            let startsSequence = true;
-            let endsSequence = true;
-            let showTimestamp = true;
-
-            if (previous) {
-                let previousMoment = previous.timestamp;
-                let previousDuration = currentMoment.getTime() - previousMoment.getTime();
-                prevBySameAuthor = previous.author === current.author;
-
-                if (prevBySameAuthor && previousDuration < milliseconds(1)) {
-                    startsSequence = false;
-                }
-
-                if (previousDuration < milliseconds(1)) {
-                    showTimestamp = false;
-                }
-            }
-
-            if (next) {
-                let nextMoment = next.timestamp;
-                let nextDuration = nextMoment.getTime() - currentMoment.getTime();
-                nextBySameAuthor = next.author === current.author;
-
-                if (nextBySameAuthor && nextDuration < milliseconds(1)) {
-                    endsSequence = false;
-                }
-            }
-
-            tempMessages.push(
-                <ConversationMessageText
-                    key={i}
-                    isMine={isMine}
-                    startsSequence={startsSequence}
-                    endsSequence={endsSequence}
-                    showTimestamp={showTimestamp}
-                    data={current}
-                />
-            );
-
-            // Proceed to the next message.
-            i += 1;
-        }
-
-        return tempMessages;
-    }
+    }, [dispatch, messageSendCompleted]);
 
     const handleSaveButtonClick = () => {
         // scrollToBottom()
@@ -178,7 +140,7 @@ export const ConversationDialog = ({open, handleClose, conversationMessages, you
 
                             <Grid item xs={12}>
                                 <Grid container id={'conversationBody'} className={localClasses.conversationBody}>
-                                    {renderMessages()}
+                                    <ConversationMessagesList/>
                                     <div ref={messagesEndRef}/>
                                 </Grid>
                             </Grid>

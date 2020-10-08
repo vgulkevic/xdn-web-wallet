@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import appStyles from "../../assets/globalStyles";
 import Container from "@material-ui/core/Container";
 import {Redirect, Route, Switch} from "react-router-dom";
@@ -16,7 +16,9 @@ import {NAVIGATION_MENU_STORE_NAME} from "../../components/SidebarMenu/redux/nav
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import clsx from "clsx";
 import {Settings, SETTINGS_PATH} from "./Settings/Settings";
-import Grid from "@material-ui/core/Grid";
+import {disconnectSocket, initiateSocket, subscribeToUpdates} from "../../socket/socket";
+import {authenticateUserStateNames, USER_SESSION_STORE_NAME} from "../../redux/userSessionSlice";
+import {useDispatch} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -40,8 +42,21 @@ const useStyles = makeStyles((theme) => ({
 export const AuthenticatedRoute = () => {
     const styles = appStyles();
     const localStyles = useStyles();
+    const dispatch = useDispatch();
 
     const {sidebarOpen, initialised} = useSelector(state => state[NAVIGATION_MENU_STORE_NAME]);
+
+    const {
+        [authenticateUserStateNames.entity]: user
+    } = useSelector(state => state[USER_SESSION_STORE_NAME]);
+
+    useEffect(() => {
+        initiateSocket(user.token);
+        subscribeToUpdates(dispatch);
+        return () => {
+            disconnectSocket()
+        };
+    }, [user.token, dispatch])
 
     return (
         <>

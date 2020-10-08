@@ -63,7 +63,8 @@ export const Messages = () => {
                 setNewMessageDialogOpen(false)
             }}/>
             {selectedConversation &&
-            <ConversationDialog conversationMessages={selectedConversation.messages}
+            <ConversationDialog conversationId={selectedConversation.id}
+                                conversationMessages={selectedConversation.messages}
                                 theirAddress={selectedConversation.theirAddress}
                                 yourAddress={selectedConversation.yourAddress}
                                 open={conversationDialogOpen}

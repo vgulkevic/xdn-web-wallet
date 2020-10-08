@@ -3,7 +3,6 @@ import {getFormattedTimestamp} from "../../../../components/Table/headCells/time
 import Grid from "@material-ui/core/Grid";
 
 export const ConversationMessageText = ({data, isMine, startsSequence, endsSequence, showTimestamp}) => {
-
     const friendlyTimestamp = getFormattedTimestamp(data.timestamp);
 
     return (
