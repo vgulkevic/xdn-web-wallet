@@ -7,14 +7,13 @@ import Paper from "@material-ui/core/Paper";
 import {BasicTableToolbar} from "../../../components/Table/BasicTableToolbar";
 import {EnhancedTable} from "../../../components/Table/Table";
 import {CreateNewButton} from "../../../components/buttons";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
+import CustomButton from "../../../components/CustomButton";
+import {AddressDialog} from "./AddressDialog";
 
 export const RECEIVE_PATH = "/receive";
 export const RECEIVE_MENU_ITEM = "Receive";
 
-const headCells = [
-    {id: 'address', label: 'Address', valueGetter: (el) => el}
-]
 
 export const Receive = () => {
     const [id, setId] = useState();
@@ -36,6 +35,33 @@ export const Receive = () => {
         dispatch(getAccountAddresses());
     }, [dispatch])
 
+    const [selectedAddress, setSelectedAddress] = useState(null);
+    const [addressDialogOpen, setAddressDialogOpen] = useState(false);
+
+    const headCells = [
+        {id: 'address', label: 'Address', valueGetter: (el) => el},
+        {
+            id: 'smsginfobutton', label: '',
+            custom: {
+                element: (address) => {
+                    return (
+                        <>
+                            <CustomButton color="secondary"
+                                          variant="outlined"
+                                          noMargin={true}
+                                          onClick={() => {
+                                              setAddressDialogOpen(true);
+                                              setSelectedAddress(address);
+                                          }}>
+                                Info
+                            </CustomButton>
+                        </>
+                    )
+                }
+            }
+        }
+    ]
+
     return (
         <>
             <Paper className={classes.paper}>
@@ -49,6 +75,11 @@ export const Receive = () => {
                     />
                 </BasicTableToolbar>
                 <EnhancedTable headCells={headCells} tableElements={accountAddresses || []} isLoading={accountAddressesLoading}/>
+
+                <AddressDialog open={addressDialogOpen} address={selectedAddress} handleClose={() => {
+                    setSelectedAddress(null);
+                    setAddressDialogOpen(false);
+                }}/>
             </Paper>
         </>
     );

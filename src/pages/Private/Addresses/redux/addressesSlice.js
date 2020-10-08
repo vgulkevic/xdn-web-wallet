@@ -1,7 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {createResetState} from "../../../../redux/utils/reducerFunctionsFactory";
 import {createGetSliceActionFactory} from "../../../../redux/utils/getSliceActionFactory";
-import {debugAddresses} from "./debugAddresses";
 
 const ADDRESSES_STORE_NAME = 'ADDRESSES_STORE_NAME';
 
@@ -16,17 +15,10 @@ const {
         storeName: ADDRESSES_STORE_NAME,
         entityNameInStore: "addresses",
         thunkName: "/addresses/get",
-        thunkUrl: (arg) => {
-            return `/${arg}/addresses`
+        thunkUrl: () => {
+            return `/addresses`
         },
-        showToastOnFail: true,
-
-        // for local development
-        debugPromise: () => new Promise((resolve, reject) => {
-            window.setTimeout(function () {
-                resolve(debugAddresses);
-            }, 300);
-        })
+        showToastOnFail: true
     }
 );
 

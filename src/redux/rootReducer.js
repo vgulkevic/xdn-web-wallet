@@ -16,6 +16,7 @@ import {GET_XDN_PRICE_STORE_NAME, getXdnPriceReducer} from "../pages/Public/redu
 import {GET_BTC_USD_PRICE_STORE_NAME, getBtcUsdPriceReducer} from "../pages/Public/redux/getBtcUsdPriceSlice";
 import {accountMessagesReducer, MESSAGES_STORE_NAME} from "../pages/Private/Messages/redux/messagesInboxSlice";
 import {CONVERSATION_STATE_STORE_NAME, conversationMessagesReducer} from "../pages/Private/Messages/Conversation/redux/conversationStateSlice";
+import {SINGLE_ADDRESS_STORE_NAME, singleAddressReducer} from "../pages/Private/Receive/redux/receiveAddressSlice";
 
 const reducerList = {
     [NOTIFIER_STORE_NAME]: notifierReducer,
@@ -34,7 +35,8 @@ const reducerList = {
     [GET_XDN_PRICE_STORE_NAME]: getXdnPriceReducer,
     [GET_BTC_USD_PRICE_STORE_NAME]: getBtcUsdPriceReducer,
     [MESSAGES_STORE_NAME]: accountMessagesReducer,
-    [CONVERSATION_STATE_STORE_NAME]: conversationMessagesReducer
+    [CONVERSATION_STATE_STORE_NAME]: conversationMessagesReducer,
+    [SINGLE_ADDRESS_STORE_NAME]: singleAddressReducer
 }
 
 const rootReducer = combineReducers(reducerList);
