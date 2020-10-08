@@ -8,7 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import CloseIcon from "@material-ui/icons/Close";
 import DialogContent from "@material-ui/core/DialogContent";
 import {SingleTextInput} from "../../../components/input/SingleTextInput";
-import {getSingleAddress, getSingleAddressStateNames, SINGLE_ADDRESS_STORE_NAME} from "./redux/receiveAddressSlice";
+import {getSingleAddress, getSingleAddressStateNames, SINGLE_ADDRESS_STORE_NAME, resetState} from "./redux/receiveAddressSlice";
 
 export const AddressDialog = ({address, open, handleClose}) => {
     const classes = globalStyles();
@@ -34,6 +34,7 @@ export const AddressDialog = ({address, open, handleClose}) => {
         if (!open) {
             setAddressValue('');
             setAddressPublicKey('');
+            dispatch(resetState());
         }
     }, [open]);
 
