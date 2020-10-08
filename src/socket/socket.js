@@ -5,7 +5,7 @@ import {newMessageUpdate as dialogNewMessageUpdate} from "../pages/Private/Messa
 
 let socket;
 export const initiateSocket = (apiKey) => {
-    socket = io(profile.socketUrl);
+    socket = io(profile.socketUrl, {secure: true});
     if (socket && apiKey) {
         socket.emit('subscribe', apiKey);
     }
