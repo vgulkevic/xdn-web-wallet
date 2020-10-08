@@ -39,9 +39,9 @@ export const AddressDialog = ({address, open, handleClose}) => {
 
     useEffect(() => {
         if (addressPubKey) {
-            setAddressPublicKey(addressPubKey.pubKey)
+            setAddressPublicKey(addressValue + ":" + addressPubKey.pubKey)
         }
-    }, [addressPubKey]);
+    }, [addressValue, addressPubKey]);
 
     return (
         <>
