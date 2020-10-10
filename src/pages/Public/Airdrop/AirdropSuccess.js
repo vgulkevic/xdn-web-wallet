@@ -49,7 +49,11 @@ export const AirdropSuccess = () => {
                                 })
                             }
                         </Grid>
-
+                    </>
+                }
+                {
+                    (result && result.privateKeysFailedDueToSystemError && result.privateKeysFailedDueToSystemError.length > 0) &&
+                    <>
                         <Grid item xs={12} style={{paddingTop: '20px', paddingBottom: '20px'}}>
 
                             <Typography variant={'h5'}>
