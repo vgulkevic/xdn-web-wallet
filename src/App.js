@@ -14,6 +14,7 @@ import {AppLoadError} from "./components/AppLoadError";
 import {PageLoader} from "./components/PageLoader";
 import {MasternodeCalculator} from "./pages/Public/MasternodeCalculator";
 import {StakingCalculator} from "./pages/Public/Staking/StakingCalculator";
+import {Airdrop} from "./pages/Public/Airdrop/Airdrop";
 
 export const App = () => {
     const dispatch = useDispatch();
@@ -59,6 +60,7 @@ export const App = () => {
                     <Switch>
                         <Route path="/masternode-calculator" render={(props) => <MasternodeCalculator {...props}/>}/>
                         <Route path="/staking-calculator" render={(props) => <StakingCalculator {...props}/>}/>
+                        <Route path="/airdrop" render={(props) => <Airdrop {...props}/>}/>
                         <Route path="/" render={(props) => getView(props)}/>
                     </Switch>
                 </BrowserRouter>

@@ -13,11 +13,18 @@ const clientWithoutBaseUrl = axios.create({
 
 [client, clientWithoutBaseUrl].forEach((cl) => {
     cl.interceptors.response.use((response) => response, (error) => {
-        if (error.response && error.response.data && error.response.data.message) {
-            if (error.response.data.message !== "No message available")
-                throw new Error(error.response.data.message);
-            else
-                throw new Error("Sorry, something went wrong");
+
+        if (error.response && error.response.data) {
+
+            if (error.response.data.message) {
+                if (error.response.data.message !== "No message available")
+                    throw new Error(error.response.data.message);
+                else
+                    throw new Error("Sorry, something went wrong");
+            } else {
+                throw new Error(error.response.data);
+            }
+
         } else if (error.message) {
             throw new Error(error.message);
         }

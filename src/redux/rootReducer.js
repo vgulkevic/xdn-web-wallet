@@ -17,6 +17,7 @@ import {GET_BTC_USD_PRICE_STORE_NAME, getBtcUsdPriceReducer} from "../pages/Publ
 import {accountMessagesReducer, MESSAGES_STORE_NAME} from "../pages/Private/Messages/redux/messagesInboxSlice";
 import {CONVERSATION_STATE_STORE_NAME, conversationMessagesReducer} from "../pages/Private/Messages/Conversation/redux/conversationStateSlice";
 import {SINGLE_ADDRESS_STORE_NAME, singleAddressReducer} from "../pages/Private/Receive/redux/receiveAddressSlice";
+import {ENROLL_FOR_AIRDROP_STORE_NAME, enrollForAirdropReducer} from "../pages/Public/Airdrop/redux/airdropEnrollSlice";
 
 const reducerList = {
     [NOTIFIER_STORE_NAME]: notifierReducer,
@@ -36,7 +37,8 @@ const reducerList = {
     [GET_BTC_USD_PRICE_STORE_NAME]: getBtcUsdPriceReducer,
     [MESSAGES_STORE_NAME]: accountMessagesReducer,
     [CONVERSATION_STATE_STORE_NAME]: conversationMessagesReducer,
-    [SINGLE_ADDRESS_STORE_NAME]: singleAddressReducer
+    [SINGLE_ADDRESS_STORE_NAME]: singleAddressReducer,
+    [ENROLL_FOR_AIRDROP_STORE_NAME]: enrollForAirdropReducer
 }
 
 const rootReducer = combineReducers(reducerList);

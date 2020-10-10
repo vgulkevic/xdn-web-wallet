@@ -36,7 +36,7 @@ export const AddressDialog = ({address, open, handleClose}) => {
             setAddressPublicKey('');
             dispatch(resetState());
         }
-    }, [open]);
+    }, [dispatch, open]);
 
     useEffect(() => {
         if (addressPubKey) {
