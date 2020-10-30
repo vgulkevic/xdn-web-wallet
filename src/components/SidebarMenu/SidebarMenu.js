@@ -13,10 +13,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import CallReceivedIcon from '@material-ui/icons/CallReceived';
 import CallMissedOutgoingIcon from '@material-ui/icons/CallMissedOutgoing';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
-import ContactsIcon from '@material-ui/icons/Contacts';
 import SettingsInputAntennaIcon from '@material-ui/icons/SettingsInputAntenna';
 import MessageIcon from '@material-ui/icons/Message';
-import ExploreIcon from '@material-ui/icons/Explore';
 import {Header} from "./Header";
 import CardMedia from "@material-ui/core/CardMedia";
 import Logo from "../../assets/img/DigitalNoteLogoText.png"
@@ -29,14 +27,12 @@ import {DASHBOARD_MENU_ITEM, DASHBOARD_PATH} from "../../pages/Private/Dashboard
 import {RECEIVE_MENU_ITEM, RECEIVE_PATH} from "../../pages/Private/Receive/Receive";
 import {SEND_MENU_ITEM, SEND_PATH} from "../../pages/Private/Send/Send";
 import {TRANSACTIONS_MENU_ITEM, TRANSACTIONS_PATH} from "../../pages/Private/Transactions/Transactions";
-import {ADDRESSES_MENU_ITEM, ADDRESSES_PATH} from "../../pages/Private/Addresses/Addresses";
 import {MASTERNODES_MENU_ITEM, MASTERNODES_PATH} from "../../pages/Private/Masternodes/Masternodes";
 import {MESSAGES_MENU_ITEM, MESSAGES_PATH} from "../../pages/Private/Messages/Messages";
-import {BLOCK_EXPLORER_MENU_ITEM, BLOCK_EXPLORER_PATH} from "../../pages/Private/BlockExplorer/BlockExplorer";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import {resetState} from "../../redux/userSessionSlice";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {SETTINGS_MENU_ITEM, SETTINGS_PATH} from "../../pages/Private/Settings/Settings";
+import {Auth} from "@aws-amplify/auth";
 
 export const drawerWidth = 240;
 
@@ -89,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const SidebarMenu = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const classes = useStyles();
     const theme = useTheme();
     const mdDown = useMediaQuery(theme.breakpoints.down('md'));
@@ -164,9 +160,9 @@ export const SidebarMenu = () => {
                             <MenuItem text={'Settings'} icon={<SettingsIcon color={iconColor}/>} selected={isSelected(SETTINGS_MENU_ITEM)} path={SETTINGS_PATH}/>
 
                             <ListItem button onClick={() => {
-                                window.localStorage.removeItem('user');
-                                dispatch(resetState());
-                                history.push('/set-up');
+                                Auth.signOut().then(() => {
+                                    navigate('/auth');
+                                });
                             }}>
                                 <ListItemIcon><ExitToAppIcon color={iconColor}/></ListItemIcon>
                                 <ListItemText primary={'Logout'}/>

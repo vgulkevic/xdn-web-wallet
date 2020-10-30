@@ -1,12 +1,26 @@
-import React from "react";
-import {Redirect, Route, Switch} from "react-router-dom";
-import {LoginSetup} from "./LoginSetup";
-import {NewAddress} from "./NewAddress";
-import {ImportAddress} from "./ImportAddress";
+import React, {useEffect} from "react";
 import {SingleContainerLayout} from "../../components/layout/SingleContainerLayout";
 import {FadeInContainer} from "./FadeInContainer";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import {Outlet} from "react-router-dom";
+import {AUTH_STORE_NAME, getAuthStateNames} from "./redux/loginSlice";
+import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {DASHBOARD_PATH} from "../Private/Dashboard/Dashboard";
 
-export const LoginPage = ({...props}) => {
+export const LoginPage = () => {
+    const navigate = useNavigate();
+
+    const {
+        [getAuthStateNames.entity]: loggedInUser,
+    } = useSelector(state => state[AUTH_STORE_NAME])
+
+    useEffect(() => {
+        if (loggedInUser) {
+            navigate(DASHBOARD_PATH);
+        }
+    }, [loggedInUser, navigate]);
 
     return (
         <>
@@ -14,14 +28,15 @@ export const LoginPage = ({...props}) => {
                 <div style={{paddingTop: '100px'}}/>
 
                 <SingleContainerLayout>
-                    <Switch>
-                        <Route path="/set-up" render={() => <LoginSetup/>}/>
-                        <Route exact path="/new-address" render={() => <NewAddress/>}/>
-                        <Route exact path="/import-address" render={() => <ImportAddress/>}/>
 
+                    <Grid item container justify="center" style={{height: "100%"}}>
+                        <Grid item xs={7}>
+                            <Box display="flex" flexDirection="column" alignItems="center" style={{padding: 8}}>
+                                <Outlet/>
+                            </Box>
+                        </Grid>
+                    </Grid>
 
-                        <Redirect to='/set-up'/>
-                    </Switch>
                 </SingleContainerLayout>
 
                 <div style={{paddingBottom: '100px'}}/>

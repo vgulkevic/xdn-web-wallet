@@ -2,15 +2,15 @@ import React from "react";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export const MenuItem = ({text, icon, selected, path}) => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     return (
         <>
             <ListItem button selected={selected} onClick={() => {
-                history.push(path);
+                navigate(path);
             }}>
                 <ListItemIcon>
                     {icon}

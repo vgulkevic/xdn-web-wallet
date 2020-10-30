@@ -3,9 +3,6 @@ import {NOTIFIER_STORE_NAME, notifierReducer} from "../components/Notifier/notif
 import {NAVIGATION_MENU_STORE_NAME, navigationMenuReducer} from "../components/SidebarMenu/redux/navigationMenuSlice";
 import {ADDRESSES_STORE_NAME, addressesReducer} from "../pages/Private/Addresses/redux/addressesSlice";
 import {MASTERNODES_STORE_NAME, masternodesReducer} from "../pages/Private/Masternodes/redux/masternodesSlice";
-import {USER_SESSION_STORE_NAME, userSessionReducer} from "./userSessionSlice";
-import {CREATE_NEW_WALLET_STORE_NAME, createNewWalletReducer} from "../pages/Login/redux/createNewWalletSlice";
-import {IMPORT_NEW_ADDRESS_STORE_NAME, importAddressReducer} from "../pages/Login/redux/importAddressSlice";
 import {ACCOUNT_BALANCE_STORE_NAME, accountBalanceReducer} from "../pages/Private/Dashboard/redux/accountBalanceSlice";
 import {LATEST_TRANSACTIONS_STORE_NAME, latestTransactionsReducer} from "../pages/Private/Dashboard/redux/latestTransactionsSlice";
 import {ACCOUNT_ADDRESSES_STORE_NAME, accountAddressesReducer} from "../pages/Private/Receive/redux/accountAddressesSlice";
@@ -17,7 +14,7 @@ import {GET_BTC_USD_PRICE_STORE_NAME, getBtcUsdPriceReducer} from "../pages/Publ
 import {accountMessagesReducer, MESSAGES_STORE_NAME} from "../pages/Private/Messages/redux/messagesInboxSlice";
 import {CONVERSATION_STATE_STORE_NAME, conversationMessagesReducer} from "../pages/Private/Messages/Conversation/redux/conversationStateSlice";
 import {SINGLE_ADDRESS_STORE_NAME, singleAddressReducer} from "../pages/Private/Receive/redux/receiveAddressSlice";
-import {ENROLL_FOR_AIRDROP_STORE_NAME, enrollForAirdropReducer} from "../pages/Public/Airdrop/redux/airdropEnrollSlice";
+import {AUTH_STORE_NAME, authReducer} from "../pages/Login/redux/loginSlice";
 
 const reducerList = {
     [NOTIFIER_STORE_NAME]: notifierReducer,
@@ -25,9 +22,6 @@ const reducerList = {
     [ADDRESSES_STORE_NAME]: addressesReducer,
     [MASTERNODES_STORE_NAME]: masternodesReducer,
     [ACCOUNT_BALANCE_STORE_NAME]: accountBalanceReducer,
-    [USER_SESSION_STORE_NAME]: userSessionReducer,
-    [CREATE_NEW_WALLET_STORE_NAME]: createNewWalletReducer,
-    [IMPORT_NEW_ADDRESS_STORE_NAME]: importAddressReducer,
     [LATEST_TRANSACTIONS_STORE_NAME]: latestTransactionsReducer,
     [ACCOUNT_ADDRESSES_STORE_NAME]: accountAddressesReducer,
     [WALLET_INFO_STORE_NAME]: walletInfoReducer,
@@ -38,7 +32,7 @@ const reducerList = {
     [MESSAGES_STORE_NAME]: accountMessagesReducer,
     [CONVERSATION_STATE_STORE_NAME]: conversationMessagesReducer,
     [SINGLE_ADDRESS_STORE_NAME]: singleAddressReducer,
-    [ENROLL_FOR_AIRDROP_STORE_NAME]: enrollForAirdropReducer
+    [AUTH_STORE_NAME]: authReducer
 }
 
 const rootReducer = combineReducers(reducerList);

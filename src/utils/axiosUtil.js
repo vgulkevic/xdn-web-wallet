@@ -1,6 +1,6 @@
 import axios from "axios";
-import {authenticateUserStateNames, USER_SESSION_STORE_NAME} from "../redux/userSessionSlice";
 import {profile} from "../profile";
+import {Auth} from "@aws-amplify/auth";
 
 const client = axios.create({
     baseURL: profile.apiUrl,
@@ -41,13 +41,10 @@ export function getHttpClientWithoutBaseUrl() {
     return clientWithoutBaseUrl;
 }
 
-export function geHttpClientWithApiKey({getState}) {
+export const geHttpClientWithApiKey = async () => {
     const c = getHttpClient();
 
-    let token;
-    if (getState()[USER_SESSION_STORE_NAME] && getState()[USER_SESSION_STORE_NAME][authenticateUserStateNames.entity]) {
-        token = getState()[USER_SESSION_STORE_NAME][authenticateUserStateNames.entity].token;
-    }
+    let token = await getAuthToken();
 
     if (!token) {
         throw new Error('No user token');
@@ -55,4 +52,15 @@ export function geHttpClientWithApiKey({getState}) {
 
     c.defaults.headers['x-token'] = token;
     return c;
+}
+
+export const getAuthToken = async () => {
+    const user = await Auth.currentSession();
+    if (!user) {
+        await Auth.signOut();
+        // force re-login
+        window.location = "/auth";
+    }
+
+    return user.getIdToken().getJwtToken();
 }

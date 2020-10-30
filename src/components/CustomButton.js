@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Button from '@material-ui/core/Button';
-import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress";
 import {blue} from "@material-ui/core/colors";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import {makeStyles} from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({
     buttonBorder: {
@@ -28,19 +28,26 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const CustomButton = ({children, variant, loading, disabled, noMargin, fullWidth, thinBorders, ...props}) => {
+const CustomButton = ({children, variant, loading, disabled, noMargin, fullWidth, thinBorders, noWrap, ...props}) => {
     const classes = useStyles({noMargin: noMargin, fullWidth: fullWidth});
 
     return (
-        <div className={classes.wrapper}>
-            <Button variant={variant}
-                    className={variant === "outlined" && !thinBorders ? classes.buttonBorder : ""}
-                    disabled={loading || disabled}
-                    {...props} >
+        (noWrap ? <Button variant={variant}
+                          className={variant === "outlined" && !thinBorders ? classes.buttonBorder : ""}
+                          disabled={loading || disabled}
+                          {...props} >
                 {children}
-            </Button>
-            {loading && <CircularProgress size={24} className={classes.buttonProgress}/>}
-        </div>
+            </Button> :
+            <div className={classes.wrapper}>
+                <Button variant={variant}
+                        className={variant === "outlined" && !thinBorders ? classes.buttonBorder : ""}
+                        disabled={loading || disabled}
+                        {...props} >
+                    {children}
+                </Button>
+                {loading && <CircularProgress size={24} className={classes.buttonProgress}/>}
+            </div>)
+
     );
 };
 

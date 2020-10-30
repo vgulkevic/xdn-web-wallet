@@ -6,6 +6,9 @@ import Grid from "@material-ui/core/Grid";
 import {makeStyles} from "@material-ui/core/styles";
 import clsx from "clsx";
 import {LogoComponent} from "../../pages/Login/LogoComponent";
+import Link from "@material-ui/core/Link";
+import CardMedia from "@material-ui/core/CardMedia";
+import Logo from "../../assets/img/DigitalNoteLogoText.png";
 
 const useStyles = makeStyles((theme) => ({
     root: {

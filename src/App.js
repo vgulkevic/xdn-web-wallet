@@ -1,52 +1,45 @@
 import React, {useEffect} from 'react';
-import {BrowserRouter, Switch, Route} from "react-router-dom";
 import appStyles from "./assets/globalStyles";
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import theme from "./theme";
 import {SnackbarProvider} from "notistack";
 import Notifier from "./components/Notifier/Notifier";
-import {LoginPage} from "./pages/Login/LoginPage";
-import {AuthenticatedRoute} from "./pages/Private/AuthenticatedRoute";
-import {useDispatch, useSelector} from "react-redux";
-import {authenticateUser, authenticateUserStateNames, USER_SESSION_STORE_NAME} from "./redux/userSessionSlice";
+import {useDispatch} from "react-redux";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import {AppLoadError} from "./components/AppLoadError";
-import {PageLoader} from "./components/PageLoader";
-import {MasternodeCalculator} from "./pages/Public/MasternodeCalculator";
-import {StakingCalculator} from "./pages/Public/Staking/StakingCalculator";
-import {Airdrop} from "./pages/Public/Airdrop/Airdrop";
+import {MainRouter} from "./pages/MainRouter";
+import Amplify, {Hub} from '@aws-amplify/core'
+import {profile} from "./profile";
+import {getAuth, resetState} from "./pages/Login/redux/loginSlice";
+
+Amplify.configure({
+    Auth: {
+        region: profile.AWS_REGION,
+        userPoolId: profile.USER_POOL_ID,
+        userPoolWebClientId: profile.USER_POOL_CLIENT_ID,
+    }
+});
 
 export const App = () => {
     const dispatch = useDispatch();
     const styles = appStyles();
 
-    const {
-        [authenticateUserStateNames.entity]: user,
-        [authenticateUserStateNames.loading]: checkingToken,
-        [authenticateUserStateNames.error]: authError
-    } = useSelector(state => state[USER_SESSION_STORE_NAME]);
-
     useEffect(() => {
-        dispatch(authenticateUser());
+        const listener = data => {
+            switch (data.payload.event) {
+                case "signIn":
+                    dispatch(getAuth());
+                    break;
+                case "signOut":
+                    dispatch(resetState());
+                    break;
+                default:
+                    return;
+            }
+        };
+
+        dispatch(getAuth());
+        Hub.listen("auth", listener);
     }, [dispatch]);
-
-    const getView = (props) => {
-        if (authError) {
-            // something went wrong
-            return <AppLoadError/>
-        }
-
-        if (checkingToken) {
-            // loading
-            return <PageLoader/>
-        }
-
-        if (user && user.token) {
-            return <AuthenticatedRoute {...props}/>
-        } else {
-            return <LoginPage {...props} />
-        }
-    }
 
     return (
         <MuiThemeProvider theme={theme}>
@@ -54,17 +47,8 @@ export const App = () => {
                               anchorOrigin={{vertical: 'top', horizontal: 'right'}}
                               classes={{variantSuccess: styles.success, variantError: styles.error}}>
                 <Notifier/>
-
                 <CssBaseline/>
-                <BrowserRouter>
-                    <Switch>
-                        <Route path="/masternode-calculator" render={(props) => <MasternodeCalculator {...props}/>}/>
-                        <Route path="/staking-calculator" render={(props) => <StakingCalculator {...props}/>}/>
-                        <Route path="/airdrop" render={(props) => <Airdrop {...props}/>}/>
-                        <Route path="/" render={(props) => getView(props)}/>
-                    </Switch>
-                </BrowserRouter>
-
+                <MainRouter/>
             </SnackbarProvider>
         </MuiThemeProvider>
     );
