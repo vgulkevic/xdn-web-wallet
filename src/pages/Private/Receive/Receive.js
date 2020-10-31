@@ -10,6 +10,7 @@ import {CreateNewButton} from "../../../components/buttons";
 import {v4 as uuidv4} from 'uuid';
 import CustomButton from "../../../components/CustomButton";
 import {AddressDialog} from "./AddressDialog";
+import {notifierSlice} from "../../../components/Notifier/notifierSlice";
 
 export const RECEIVE_PATH = "/receive";
 export const RECEIVE_MENU_ITEM = "Receive";
@@ -68,8 +69,19 @@ export const Receive = () => {
                 <BasicTableToolbar pageTitle="Your addresses">
                     <CreateNewButton
                         onClick={() => {
-                            setId(uuidv4());
-                            dispatch(createAccountAddress({id: id, body: {}}));
+                            if (accountAddresses.length >= 10) {
+                                dispatch(notifierSlice.actions.enqueueSnackbar(
+                                    {
+                                        message: `Cannot create more addresses for this account. Limit has been reached.`,
+                                        options: {
+                                            variant: 'error'
+                                        }
+                                    }
+                                ));
+                            } else {
+                                setId(uuidv4());
+                                dispatch(createAccountAddress({id: id, body: {}}));
+                            }
                         }}
                         loading={creatingNewAddress[id]}
                     />

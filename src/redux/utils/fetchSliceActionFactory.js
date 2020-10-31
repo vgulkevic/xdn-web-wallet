@@ -52,8 +52,8 @@ export function createFetchSliceActionFactory(params) {
                     getUrl = params.thunkUrl;
                 }
             }
-
-            const res = await geHttpClientWithApiKey(thunkAPI).get(getUrl);
+            let res = await geHttpClientWithApiKey(thunkAPI);
+            res = await res.get(getUrl);
             return res.data;
         }
     );

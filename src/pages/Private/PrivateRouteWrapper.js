@@ -38,18 +38,16 @@ export const PrivateRouteWrapper = () => {
     const {sidebarOpen, initialised} = useSelector(state => state[NAVIGATION_MENU_STORE_NAME]);
 
     const {
-        [getAuthStateNames.entity]: loggedInUser,
+        [getAuthStateNames.entity]: user,
     } = useSelector(state => state[AUTH_STORE_NAME])
 
-
-    // todo fix socket init
-    // useEffect(() => {
-    //     initiateSocket(user.token);
-    //     subscribeToUpdates(dispatch);
-    //     return () => {
-    //         disconnectSocket()
-    //     };
-    // }, [user.token, dispatch])
+    useEffect(() => {
+        initiateSocket(user['attributes']['sub']);
+        subscribeToUpdates(dispatch);
+        return () => {
+            disconnectSocket()
+        };
+    }, [user, dispatch])
 
     return (
         <>

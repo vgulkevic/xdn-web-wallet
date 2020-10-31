@@ -56,8 +56,9 @@ export function createCreateItemFromListSliceActionFactory(params) {
                     url = params.thunkUrl;
                 }
             }
-            const res = await geHttpClientWithApiKey(thunkAPI).post(url, arg.body)
-            return res.data
+            let res = await geHttpClientWithApiKey(thunkAPI);
+            res = await res.post(url, arg.body);
+            return res.data;
         }
     );
 

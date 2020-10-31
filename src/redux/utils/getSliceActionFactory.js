@@ -55,7 +55,8 @@ export function createGetSliceActionFactory(params) {
                 }
             }
 
-            const res = await geHttpClientWithApiKey(thunkAPI).get(getUrl);
+            let res = await geHttpClientWithApiKey(thunkAPI);
+            res = await res.get(getUrl);
             return res.data;
         }
     );
