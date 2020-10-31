@@ -2,6 +2,7 @@ import {Auth} from "@aws-amplify/auth";
 import {createSlice} from "@reduxjs/toolkit";
 import {makeAsyncSliceActions} from "../../../redux/utils/asyncSliceActionFactory";
 import {createResetState} from "../../../redux/utils/reducerFunctionsFactory";
+import {getHttpClient} from "../../../utils/axiosUtil";
 
 const AUTH_STORE_NAME = "AUTH_STORE_NAME"
 const incompleteUserStateName = 'incompleteUser'
@@ -19,10 +20,13 @@ const {
         thunkName: "/auth/login",
         thunkAction: async ({username, password}, thunkAPI) => {
             const user = await Auth.signIn(username, password);
+            console.log(user);
             return user
         },
         onFulfilledFunc: (state, action, stateNames) => {
             const user = action.payload
+            console.log("onFulfilledFunc");
+            console.log(user);
             if(user.challengeName) {
                 state[incompleteUserStateName] = user
             } else {
@@ -108,12 +112,64 @@ const {
     showToastOnSuccess: true
 })
 
+const {
+    initialState: signUpInitialState,
+    thunk: signUp,
+    reducers: signUpExtraReducers,
+    stateNames: signUpStateNames
+} = makeAsyncSliceActions(
+    {
+        actionName: "signUp",
+        storeName: AUTH_STORE_NAME,
+        entityNameInStore: "user",
+        thunkName: "/auth/signup",
+        thunkAction: async ({username, password}, thunkAPI) => {
+            await getHttpClient().post("/sign-up", {
+                username: username,
+                password: password
+            });
+            return {username: username, password: password};
+        },
+        onFulfilledFunc: (state, action, stateNames) => {
+            state[signUpCodeStateNames.entity] = action.payload;
+            return null;
+        },
+        showToastOnSuccess: true,
+        showToastOnFail: true
+    }
+);
+
+const {
+    initialState: signUpCodeInitialState,
+    thunk: signUpCode,
+    reducers: signUpCodeExtraReducers,
+    stateNames: signUpCodeStateNames
+} = makeAsyncSliceActions(
+    {
+        actionName: "signUpCode",
+        storeName: AUTH_STORE_NAME,
+        entityNameInStore: "signUpCode",
+        thunkName: "/auth/signup/code",
+        thunkAction: async ({username, password, code}, thunkAPI) => {
+            await getHttpClient().post("/sign-up-complete", {
+                username: username,
+                code: code
+            });
+            await signIn({username: username, password: password});
+        },
+        showToastOnSuccess: true,
+        showToastOnFail: true
+    }
+);
+
 const initialState = {
     ...signInInitialState,
     ...getAuthInitialState,
     ...completePasswordInitialState,
     ...forgotPasswordInitialState,
-    ...forgotPasswordCompleteInitialState
+    ...forgotPasswordCompleteInitialState,
+    ...signUpInitialState,
+    ...signUpCodeInitialState
 }
 
 const authSlice = createSlice(
@@ -128,7 +184,9 @@ const authSlice = createSlice(
             ...getAuthExtraReducers,
             ...completePasswordExtraReducers,
             ...forgotPasswordExtraReducers,
-            ...forgotPasswordCompleteExtraReducers
+            ...forgotPasswordCompleteExtraReducers,
+            ...signUpExtraReducers,
+            ...signUpCodeExtraReducers
         }
     }
 );
@@ -149,5 +207,9 @@ export {
     forgotPassword,
     forgotPasswordStateNames,
     forgotPasswordComplete,
-    forgotPasswordCompleteStateNames
+    forgotPasswordCompleteStateNames,
+    signUp,
+    signUpStateNames,
+    signUpCode,
+    signUpCodeStateNames
 }

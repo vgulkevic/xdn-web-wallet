@@ -16,6 +16,8 @@ import LogInForm from "./Login/LogInForm";
 import CompletePasswordForm from "./Login/CompletePasswordForm";
 import ForgotPasswordForm from "./Login/ForgotPasswordForm";
 import {ForgotPasswordConfirmForm} from "./Login/ForgotPasswordConfirmForm";
+import SignUpForm from "./Login/SignUpForm";
+import SignUpFormVerification from "./Login/SignUpFormVerification";
 
 export const MainRouter = () => {
     return (
@@ -29,6 +31,8 @@ export const MainRouter = () => {
                     <Route path="/set-password" element={<CompletePasswordForm/>}/>
                     <Route path="/forgot" element={<ForgotPasswordForm/>}/>
                     <Route path="/forgot/complete" element={<ForgotPasswordConfirmForm/>}/>
+                    <Route path="/sign-up" element={<SignUpForm/>}/>
+                    <Route path="/sign-up/complete" element={<SignUpFormVerification/>}/>
                 </Route>
 
                 <PrivateRoute path="/" element={<PrivateRouteWrapper/>}>
