@@ -8,14 +8,14 @@ import globalStyles from "../../../assets/globalStyles";
 import SimpleInput from "../../../components/input/SimpleInput";
 import {getFormattedTimestamp} from "../../../components/Table/headCells/timeHeadCell";
 
-export const TransactionDialog = ({transaction, open, setOpen}) => {
+export const TransactionDialog = ({feedItem, open, setOpen}) => {
     const classes = globalStyles();
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
         <>
-            {!transaction ? null :
+            {!feedItem ? null :
                 <Dialog open={open}
                         fullWidth={true}
                         fullScreen={fullScreen}
@@ -26,7 +26,7 @@ export const TransactionDialog = ({transaction, open, setOpen}) => {
                     <DialogTitle className={classes.dialogTitle}>
                         <Grid container>
                             <Grid item xs={12}>
-                                Transaction Details
+                                Feed Item Details
                             </Grid>
                         </Grid>
                         <IconButton aria-label="close" className={classes.closeDialogButton} onClick={() => setOpen(false)}>
@@ -35,35 +35,26 @@ export const TransactionDialog = ({transaction, open, setOpen}) => {
                     </DialogTitle>
                     <DialogContent>
                         <Grid container spacing={2}>
-                            <TransactionInfoField transaction={transaction} fieldName={'txid'} label={'Tx id'} fullWidth={true}/>
-                            <TransactionInfoField transaction={transaction} fieldName={'address'} label={'Address'} fullWidth={true}/>
-                            <TransactionInfoField transaction={transaction} fieldName={'blockhash'} label={'Block hash'} fullWidth={true}/>
-                            <TransactionInfoField transaction={transaction} fieldName={'amount'} label={'Amount'}/>
-                            <TransactionInfoField transaction={transaction} fieldName={'blockindex'} label={'Block index'}/>
+                            <TransactionInfoField feedItem={feedItem} fieldName={'txId'} label={'Tx id'} fullWidth={true}/>
+                            <TransactionInfoField feedItem={feedItem} fieldName={'address'} label={'Address'} fullWidth={true}/>
+
+                            {feedItem.type === 'credit' && getConfirmedStatusForCreditTransaction(feedItem) }
+
+                            <TransactionInfoField feedItem={feedItem} fieldName={'transactionAmount'} label={'Transaction amount'}/>
+                            {feedItem.type === 'debit' && <TransactionInfoField feedItem={feedItem} fieldName={'txfee'} label={'Fee'}/>}
+
+                            <TransactionInfoField feedItem={feedItem} fieldName={'type'} label={'Type'}/>
+                            <TransactionInfoField feedItem={feedItem} fieldName={'balanceBefore'} label={'Balance before'}/>
+                            <TransactionInfoField feedItem={feedItem} fieldName={'balanceAfter'} label={'Balance after'}/>
+
 
                             <Grid item xs={12} sm={6}>
                                 <SimpleInput type={'text'}
-                                             label={'Block time'}
-                                             value={getFormattedTimestamp(transaction.blocktime * 1000) + ""}
+                                             label={'Created at'}
+                                             value={getFormattedTimestamp(feedItem.createdAt) + ""}
                                              disabled={true}
                                 />
                             </Grid>
-
-                            <Grid item xs={12} sm={6}>
-                                <SimpleInput type={'text'}
-                                             label={'Time'}
-                                             value={getFormattedTimestamp(transaction.time * 1000) + ""}
-                                             disabled={true}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <SimpleInput type={'text'}
-                                             label={'Time Received'}
-                                             value={getFormattedTimestamp(transaction.timereceived * 1000) + ""}
-                                             disabled={true}
-                                />
-                            </Grid>
-
 
                         </Grid>
                     </DialogContent>
@@ -73,16 +64,40 @@ export const TransactionDialog = ({transaction, open, setOpen}) => {
     )
 }
 
-const TransactionInfoField = ({transaction, fieldName, label, fullWidth}) => {
+const TransactionInfoField = ({feedItem, fieldName, label, fullWidth}) => {
     return (
         <>
             <Grid item xs={12} sm={fullWidth ? 12 : 6}>
                 <SimpleInput type={'text'}
                              label={label}
-                             value={transaction[fieldName] + ""}
+                             value={(feedItem[fieldName] || "") + ""}
                              disabled={true}
                 />
             </Grid>
         </>
     );
+}
+
+const getConfirmedStatusForCreditTransaction = (feedItem) => {
+    if (feedItem.confirmed) {
+        return (
+            <Grid item xs={12} sm={6}>
+                <SimpleInput type={'text'}
+                             label={'Confirmed'}
+                             value={"Yes"}
+                             disabled={true}
+                />
+            </Grid>
+        );
+    } else {
+        return (
+            <Grid item xs={12} sm={6}>
+                <SimpleInput type={'text'}
+                             label={'Confirmed'}
+                             value={`Unconfirmed: ${feedItem.confirmations}/6`}
+                             disabled={true}
+                />
+            </Grid>
+        );
+    }
 }

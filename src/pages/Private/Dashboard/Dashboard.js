@@ -65,7 +65,7 @@ export const Dashboard = () => {
                     <Paper className={globalStyles.paperSecondary} style={{height: `100%`, paddingBottom: 0}}>
                         <Grid container>
                             <Grid item xs={12} style={{paddingBottom: `20px`}}>
-                                <Title>Recent Transactions</Title>
+                                <Title>Feed</Title>
                             </Grid>
 
                             <Grid item xs={12}>

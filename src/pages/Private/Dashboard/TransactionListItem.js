@@ -14,38 +14,30 @@ import LoopIcon from '@material-ui/icons/Loop';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import BlockIcon from '@material-ui/icons/Block';
 
-export const TransactionListItem = ({transaction, onClick}) => {
+export const TransactionListItem = ({feedItem, onClick}) => {
     const ticker = useTicker();
-
-    const getAmount = (transaction) => {
-        if (transaction.category === "send") {
-            return transaction.amount + transaction.fee
-        }
-
-        return transaction.amount
-    }
 
     return (
         <>
-            <ListItem onClick={() => onClick(transaction)} button>
+            <ListItem onClick={() => onClick(feedItem)} button>
                 <ListItemAvatar>
                     <Avatar>
-                        {getIcon(transaction)}
+                        {getIcon(feedItem)}
                     </Avatar>
                 </ListItemAvatar>
                 <ListItemText primary={
                     <>
                         <Grid container direction="row" justify="space-between">
                             <Grid item>
-                                {getFormattedTimestamp((transaction.timereceived || transaction.time) * 1000)}
+                                {getFormattedTimestamp(feedItem.createdAt)}
                             </Grid>
 
-                            <Grid item style={getAmountColor(transaction)}>
-                                {getAmount(transaction)} {ticker}
+                            <Grid item style={getAmountColor(feedItem)}>
+                                {} {ticker}
                             </Grid>
                         </Grid>
                     </>}
-                              secondary={transaction.address}/>
+                              secondary={feedItem.address}/>
             </ListItem>
             <Divider variant="inset" component="li" style={{width: '100%', listStyle: 'none'}}/>
         </>
@@ -53,11 +45,11 @@ export const TransactionListItem = ({transaction, onClick}) => {
 }
 
 
-export const getIcon = (transaction) => {
-    switch (transaction.category) {
-        case "receive":
+export const getIcon = (feedItem) => {
+    switch (feedItem.type) {
+        case "credit":
             return <CallReceivedIcon/>
-        case "send":
+        case "debit":
             return <CallMissedOutgoingIcon/>;
         case "move":
             return <ImportExportIcon/>;
@@ -72,15 +64,15 @@ export const getIcon = (transaction) => {
     }
 }
 
-export const getAmountColor = (transaction) => {
+export const getAmountColor = (feedItem) => {
     const color = {}
 
-    switch (transaction.category) {
-        case "receive":
+    switch (feedItem.type) {
+        case "credit":
         case "generate":
             // color.color = "#29a24a";
             return color;
-        case "send":
+        case "debit":
             color.color = "#dc645b";
             return color;
         case "move":

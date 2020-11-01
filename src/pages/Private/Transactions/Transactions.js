@@ -9,27 +9,38 @@ import {EnhancedTable} from "../../../components/Table/Table";
 import {timeHeadCell} from "../../../components/Table/headCells/timeHeadCell";
 import {getIcon} from "../Dashboard/TransactionListItem";
 import {TransactionDialog} from "./TransactionDialog";
+import {mapFeedItem} from "../Dashboard/feedItem";
+import DoneIcon from '@material-ui/icons/Done';
 
 export const TRANSACTIONS_PATH = "/transactions";
-export const TRANSACTIONS_MENU_ITEM = "Transactions";
+export const TRANSACTIONS_MENU_ITEM = "Feed";
 
 
 const headCells = [
-    timeHeadCell('time', 'Date', (el) => parseInt(el.time) * 1000),
-    {id: 'amount', label: 'Amount',
-    custom: {
-        element: (item) => {
-            return item.amount
-        }
-    }},
-
+    timeHeadCell('createdAt', 'Date', (el) => el.createdAt),
+    {id: 'transactionAmount', label: 'Amount'},
     {id: 'address', label: 'Address'},
-    {id: 'confirmations', label: 'Confirmations'},
     {
-        id: "category", label: "",
+        id: "type", label: "Type",
         custom: {
             element: (item) => {
-                return <div title={item.category}>{getIcon(item)}</div>;
+                return <div title={item.type}>{getIcon(item)}</div>;
+            }
+        }
+    },
+    {
+        id: "confirmed", label: "Confirmed",
+        custom: {
+            element: (item) => {
+                if (item.type === 'debit') {
+                    return <DoneIcon/>
+                } else if (item.type === 'credit') {
+                    if (item.confirmed) {
+                        return <DoneIcon/>
+                    } else {
+                        return `${item.confirmations}/6`
+                    }
+                }
             }
         }
     }
@@ -42,7 +53,7 @@ export const Transactions = () => {
     const [selectedTransaction, setSelectedTransaction] = useState(null);
 
     const {
-        [getAccountTransactionsStateNames.entity]: accountTransactions,
+        [getAccountTransactionsStateNames.entity]: feedItems,
         [getAccountTransactionsStateNames.loaderIndicator]: accountTransactionsLoading
     } = useSelector(state => state[ACCOUNT_TRANSACTIONS_STORE_NAME]);
 
@@ -51,15 +62,15 @@ export const Transactions = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        // just gets 50 recent transactions
-        dispatch(getAccountTransactions({count: 50, skip: 0}));
+        // currently returns latest 30 feed items
+        dispatch(getAccountTransactions());
     }, [dispatch]);
 
     return (
         <>
             <Paper className={classes.paper}>
                 <BasicTableToolbar pageTitle="Transactions"/>
-                <EnhancedTable headCells={headCells} tableElements={accountTransactions || []} isLoading={accountTransactionsLoading} tableElementOnClick={(transaction) => {
+                <EnhancedTable headCells={headCells} tableElements={(feedItems || []).map(item => {return mapFeedItem(item)})} isLoading={accountTransactionsLoading} tableElementOnClick={(transaction) => {
                     setSelectedTransaction(transaction);
                     setTransactionDialogOpen(true);
                 }}/>

@@ -15,6 +15,7 @@ import {ACCOUNT_BALANCE_STORE_NAME, fetchAccountBalance, getAccountBalance, getA
 import {ConfirmationDialogWithTextInput} from "../../../components/ConfirmationDialog";
 import {isFormValid} from "../../../utils/formUtils";
 import {resetState, SEND_TRANSACTION_STORE_NAME, sendTransaction, sendTransactionStateNames} from "./redux/sendTransactionSlice";
+import {notifierSlice} from "../../../components/Notifier/notifierSlice";
 
 export const SEND_PATH = "/send";
 export const SEND_MENU_ITEM = "Send";
@@ -152,6 +153,19 @@ export const Send = () => {
                                         <ConfirmationDialogWithTextInput open={confirmationDialogOpen} title={'Confirm transaction'}
                                                                          confirmationRequired={true} cancelCallback={() => setConfirmationDialogOpen(false)}
                                                                          applyCallback={() => {
+                                                                             if (parseFloat(walletInfo.paytxfee) + parseFloat(amount) > parseFloat(accountBalance.balance)) {
+                                                                                 dispatch(notifierSlice.actions.enqueueSnackbar(
+                                                                                     {
+                                                                                         message: "Not enough balance",
+                                                                                         options: {
+                                                                                             variant: 'error'
+                                                                                         }
+                                                                                     }
+                                                                                 ));
+                                                                                 setConfirmationDialogOpen(false);
+                                                                                 return;
+                                                                             }
+
                                                                              setConfirmationDialogOpen(false);
                                                                              dispatch(sendTransaction({
                                                                                  body: {
@@ -161,7 +175,7 @@ export const Send = () => {
                                                                              }));
                                                                          }}
                                                                          description={
-                                                                             <>Are you sure you want to send<br/><br/>
+                                                                             <>Are you sure you want to send (fee incl.)<br/><br/>
                                                                                  <div style={{textAlign: 'center', fontWeight: 'bold'}}>{parseFloat(walletInfo.paytxfee) + parseFloat(amount)} {ticker}</div>
                                                                                  <br/>
                                                                                  to <br/><br/>

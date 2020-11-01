@@ -5,6 +5,7 @@ import {useSelector} from "react-redux";
 import {TransactionListItem} from "./TransactionListItem";
 import Grid from "@material-ui/core/Grid";
 import {TransactionDialog} from "../Transactions/TransactionDialog";
+import {mapFeedItem} from "./feedItem";
 
 export const TransactionList = () => {
     const [transactionDialogOpen, setTransactionDialogOpen] = useState(false);
@@ -24,10 +25,13 @@ export const TransactionList = () => {
                             {
                                 latestTransactions.slice()
                                     .sort(function (a, b) {
-                                        return b.time - a.time;
+                                        return b.createdAt - a.createdAt;
                                     })
-                                    .map((transaction, index) => {
-                                        return <TransactionListItem key={index} transaction={transaction} onClick={(tr) => {
+                                    .map((transaction) => {
+                                        return mapFeedItem(transaction)
+                                    })
+                                    .map((feedItem, index) => {
+                                        return <TransactionListItem key={index} transaction={feedItem} onClick={(tr) => {
                                             setSelectedTransaction(tr)
                                             setTransactionDialogOpen(true);
                                         }}/>

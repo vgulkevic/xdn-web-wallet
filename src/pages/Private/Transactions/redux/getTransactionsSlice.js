@@ -17,15 +17,7 @@ const {
         entityNameInStore: "accountTransactions",
         thunkName: "/accountTransactions/list/get",
         thunkUrl: (arg) => {
-            let url = `/transactions?`;
-            if (arg.count) {
-                url = url + `count=${arg.count}`
-            }
-            if (arg.skip) {
-                url = url + `skip=${arg.skip}`
-            }
-
-            return url;
+            return `/transactions`;
         },
         showToastOnFail: true
     }
