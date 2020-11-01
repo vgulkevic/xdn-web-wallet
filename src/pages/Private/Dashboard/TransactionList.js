@@ -31,14 +31,14 @@ export const TransactionList = () => {
                                         return mapFeedItem(transaction)
                                     })
                                     .map((feedItem, index) => {
-                                        return <TransactionListItem key={index} transaction={feedItem} onClick={(tr) => {
+                                        return <TransactionListItem key={index} feedItem={feedItem} onClick={(tr) => {
                                             setSelectedTransaction(tr)
                                             setTransactionDialogOpen(true);
                                         }}/>
                                     })
                             }
                         </Grid>
-                        <TransactionDialog open={transactionDialogOpen} setOpen={setTransactionDialogOpen} transaction={selectedTransaction}/>
+                        <TransactionDialog open={transactionDialogOpen} setOpen={setTransactionDialogOpen} feedItem={selectedTransaction}/>
                     </>
             }
         </>

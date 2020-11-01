@@ -33,7 +33,7 @@ export const TransactionListItem = ({feedItem, onClick}) => {
                             </Grid>
 
                             <Grid item style={getAmountColor(feedItem)}>
-                                {} {ticker}
+                                {feedItem.transactionAmount} {ticker}
                             </Grid>
                         </Grid>
                     </>}

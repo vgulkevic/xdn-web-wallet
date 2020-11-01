@@ -79,7 +79,7 @@ const TransactionInfoField = ({feedItem, fieldName, label, fullWidth}) => {
 }
 
 const getConfirmedStatusForCreditTransaction = (feedItem) => {
-    if (feedItem.confirmed) {
+    if (feedItem.confirmed === 'true') {
         return (
             <Grid item xs={12} sm={6}>
                 <SimpleInput type={'text'}

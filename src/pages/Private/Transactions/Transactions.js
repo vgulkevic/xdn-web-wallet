@@ -35,7 +35,7 @@ const headCells = [
                 if (item.type === 'debit') {
                     return <DoneIcon/>
                 } else if (item.type === 'credit') {
-                    if (item.confirmed) {
+                    if (item.confirmed === 'true') {
                         return <DoneIcon/>
                     } else {
                         return `${item.confirmations}/6`
