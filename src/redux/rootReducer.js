@@ -15,6 +15,7 @@ import {accountMessagesReducer, MESSAGES_STORE_NAME} from "../pages/Private/Mess
 import {CONVERSATION_STATE_STORE_NAME, conversationMessagesReducer} from "../pages/Private/Messages/Conversation/redux/conversationStateSlice";
 import {SINGLE_ADDRESS_STORE_NAME, singleAddressReducer} from "../pages/Private/Receive/redux/receiveAddressSlice";
 import {AUTH_STORE_NAME, authReducer} from "../pages/Login/redux/loginSlice";
+import {ACCOUNT_ETH_ADDRESS_STORE_NAME, ethAddressReducer} from "../pages/Private/Dashboard/redux/ethAddressSlice";
 
 const reducerList = {
     [NOTIFIER_STORE_NAME]: notifierReducer,
@@ -32,7 +33,8 @@ const reducerList = {
     [MESSAGES_STORE_NAME]: accountMessagesReducer,
     [CONVERSATION_STATE_STORE_NAME]: conversationMessagesReducer,
     [SINGLE_ADDRESS_STORE_NAME]: singleAddressReducer,
-    [AUTH_STORE_NAME]: authReducer
+    [AUTH_STORE_NAME]: authReducer,
+    [ACCOUNT_ETH_ADDRESS_STORE_NAME]: ethAddressReducer
 }
 
 const rootReducer = combineReducers(reducerList);

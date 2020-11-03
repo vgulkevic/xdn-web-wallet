@@ -10,6 +10,7 @@ import {PageLoader} from "../../../components/PageLoader";
 import {useTicker} from "../../../hooks/useTicker";
 import {getLatestTransactions} from "./redux/latestTransactionsSlice";
 import {TransactionList} from "./TransactionList";
+import {EthAddressEnroll} from "./EthAddressEnroll";
 
 export const DASHBOARD_PATH = "/dashboard";
 export const DASHBOARD_MENU_ITEM = "Dashboard";
@@ -56,6 +57,10 @@ export const Dashboard = () => {
                                             Available: {accountBalance.balance} {ticker}
                                         </>
                                 }
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <EthAddressEnroll/>
                             </Grid>
                         </Grid>
                     </Paper>
